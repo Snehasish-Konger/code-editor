@@ -1,5 +1,6 @@
 {
   "name": "code-editor",
+  "homepage": "https://scientyficworld.org/ide/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
