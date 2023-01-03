@@ -40,7 +40,7 @@ const Landing = () => {
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("cobalt");
-  const [language, setLanguage] = useState(lang[0]);
+  const [language, setLanguage] = useState(lang[4]);
 
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
