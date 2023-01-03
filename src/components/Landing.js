@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { defineTheme } from "../lib/defineTheme";
 import useKeyPress from "../hooks/useKeyPress";
+import Header from "./Header";
 import Footer from "./Footer";
 import OutputWindow from "./OutputWindow";
 import CustomInput from "./CustomInput";
@@ -206,6 +207,9 @@ const Landing = () => {
             This Code editor is under development.
           </span>
         </div>
+      <div className="flex flex-col w-full h-full justify-start items-center">
+        <Header/>
+      </div>
         <div className="md:flex flex-row">
           <div className="px-4 py-2">
             <LanguagesDropdown onSelectChange={onSelectChange} />
