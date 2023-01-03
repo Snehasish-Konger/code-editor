@@ -16,13 +16,26 @@ import OutputDetails from "./OutputDetails";
 import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
 
-const javascriptDefault = `
-function add(a, b) {
-  return a + b;
-}`;
+const cDefault = `
+/**************************************************
+Welcome to the FunCode Playground!
+This is a simple code editor with a compiler and a console.
+You can write code in any of the languages supported by the compiler.
+You can also write your own custom input and see the output.
+You can also change the theme of the editor.
+**************************************************/
+
+// C program to print Hello World
+#include <stdio.h>
+int main() {
+    // printf() displays the string inside quotation
+    printf("Hello, Programmer!");
+    return 0;
+}
+`;
 
 const Landing = () => {
-  const [code, setCode] = useState(javascriptDefault);
+  const [code, setCode] = useState(cDefault);
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
