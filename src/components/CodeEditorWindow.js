@@ -4,8 +4,8 @@ import Editor from "@monaco-editor/react";
 
 const CodeEditorWindow = ({ onChange, language, code, theme }) => {
   const [value, setValue] = useState(code || "");
-
-  const handleEditorChange = (value) => {
+  
+  const handleEditorChange = (value, commentValue) => {
     setValue(value);
     onChange("code", value);
   };
@@ -15,10 +15,10 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
       <Editor
         height="85vh"
         width={`100%`}
-        language={language || "javascript"}
+        language={language || "clang"}
         value={value}
         theme={theme}
-        defaultValue="// some comment"
+        defaultValue="// Add your code here"
         onChange={handleEditorChange}
       />
     </div>

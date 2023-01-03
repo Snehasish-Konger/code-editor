@@ -16,8 +16,7 @@ import OutputDetails from "./OutputDetails";
 import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
 
-const cDefault = `
-/**************************************************
+const Default = `/**************************************************
 Welcome to the FunCode Playground!
 This is a simple code editor with a compiler and a console.
 You can write code in any of the languages supported by the compiler.
@@ -35,7 +34,7 @@ int main() {
 `;
 
 const Landing = () => {
-  const [code, setCode] = useState(cDefault);
+  const [code, setCode] = useState(Default);
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
@@ -202,7 +201,11 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-        <div className="h-4 w-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500"></div>
+        <div className="h-5 w-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500">
+          <span className="text-white text-md font-bold flex items-center justify-center">
+            This Code editor is under development.
+          </span>
+        </div>
         <div className="md:flex flex-row">
           <div className="px-4 py-2">
             <LanguagesDropdown onSelectChange={onSelectChange} />
