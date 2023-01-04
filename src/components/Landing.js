@@ -246,7 +246,7 @@ const Landing = () => {
                   !code ? "opacity-50" : ""
                 )}
               >
-                {processing ? "Processing..." : "Compile and Execute"}
+                {processing ? "Processing..." : "Execute"}
               </button>
             </div>
             {outputDetails && <OutputDetails outputDetails={outputDetails} />}
