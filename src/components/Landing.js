@@ -18,7 +18,7 @@ import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
 
 const Default = `/**************************************************
-Welcome to the FunCode Playground!
+Welcome to the Our Playground!
 This is a simple code editor with a compiler and a console.
 You can write code in any of the languages supported by the compiler.
 You can also write your own custom input and see the output.
