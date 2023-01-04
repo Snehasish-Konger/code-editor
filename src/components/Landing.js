@@ -221,7 +221,7 @@ const Landing = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row space-x-4 items-start px-4 py-4">
+        <div className="md:flex flex-row space-x-4 items-start px-4 py-4">
           <div className="flex flex-col w-full h-full justify-start items-end">
             <CodeEditorWindow
               code={code}
@@ -231,7 +231,7 @@ const Landing = () => {
             />
           </div>
 
-          <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
+          <div className="right-container flex flex-shrink-0 md:w-[30%] flex-col">
             <OutputWindow outputDetails={outputDetails} />
             <div className="flex flex-col items-end">
               <CustomInput
