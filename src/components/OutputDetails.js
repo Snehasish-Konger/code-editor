@@ -6,8 +6,8 @@ const OutputDetails = ({ outputDetails }) => {
     <div className={classnames(
       "outline-none w-full border-2 border-black z-10 rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 mt-4"
     )}>
-    <div className="metrics-container mt-4 flex flex-col space-y-3">
-      <p className="text-sm">
+    <div className="metrics-container mt-4 mb-4 flex flex-col space-y-3">
+      <p className="text-sm py-1">
         Status:{" "}
         <span className="font-semibold px-2 py-1 rounded-lg bg-gray-100">
           {outputDetails?.status?.description}
@@ -18,13 +18,13 @@ const OutputDetails = ({ outputDetails }) => {
           )}
         </span>
       </p>
-      <p className="text-sm">
+      <p className="text-sm py-1">
         Memory:{" "}
         <span className="font-semibold px-2 py-1 rounded-lg bg-gray-100">
           {outputDetails?.memory}
         </span>
       </p>
-      <p className="text-sm">
+      <p className="text-sm py-1">
         Time:{" "}
         <span className="font-semibold px-2 py-1 rounded-lg bg-gray-100">
           {outputDetails?.time}
