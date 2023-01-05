@@ -28,7 +28,7 @@ The project has the following structure:
 
 Here is the project structure-
 
-```
+```text
 Project-Online-Compiler
 │   README.md
 │   package.json
