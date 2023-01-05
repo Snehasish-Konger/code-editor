@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Documentation for Online Compiler
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
 
-## Available Scripts
+This is an online code editor that allows users to write and execute code in a variety of programming languages. It features a Monaco Editor, which is the same code editor that powers Visual Studio Code. The Monaco Editor provides syntax highlighting and autocomplete for over 40 programming languages, making it a powerful tool for developers.
 
-In the project directory, you can run:
+The code editor also has customizable themes, allowing users to personalize their coding experience. Additionally, the compiled code's execution information (such as time taken and memory used) is displayed to the user, providing insight into the performance of their code.
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The project uses the following technologies:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React.js: React.js is a JavaScript library for building user interfaces. It is used for the front-end of the project.
+- TailwindCSS: TailwindCSS is a utility-first CSS framework that provides a set of low-level styles and utility classes. It is used for styling the project.
+- Judge0: Judge0 is an API that allows users to compile and execute code in a variety of programming languages. It is used to compile and execute code in the project.
+- RapidAPI: RapidAPI is a platform that allows developers to find, test, and connect to APIs. It is used to quickly deploy the Judge0 API in the project.
+- Monaco Editor: The Monaco Editor is a code editor that powers Visual Studio Code. It is used as the code editor in the project.
 
-### `npm test`
+## Project Structure
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The project has the following structure:
 
-### `npm run build`
+- `components`: This directory contains all the components and reusable code snippets for the project. Components are self-contained pieces of code that represent a part of the user interface. Examples of components in the project include the `CodeEditorWindow` and `Landing` components.
+- `hooks`: This directory contains all the custom hooks used in the project. Hooks are functions that allow React components to interact with other parts of the application, such as the state or the database. An example of a hook in the project is the keypress hook, which is used to compile code using keyboard events.
+- `lib`: This directory contains library functions that are used throughout the project. These functions may perform a variety of tasks, such as defining the theme of the editor.
+- `constants`: This directory contains constants that are used in the project. Constants are values that do not change and are used to represent fixed data, such as the `languageOptions` and `customStyles` for dropdowns.
+- `utils`: This directory contains general utility functions that are used to help maintain the code. These functions may perform tasks such as formatting data or validating inputs.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Here is the project structure-
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+Project-Online-Compiler
+│   README.md
+│   package.json
+│   ...
+│
+└───components
+│   │   CodeEditorWindow.js
+│   │   Landing.js
+│   │   ...
+│
+└───hooks
+│   │   useKeypress.js
+│   │   ...
+│
+└───lib
+│   │   defineTheme.js
+│   │   ...
+│
+└───constants
+│   │   languageOptions.js
+│   │   customStyles.js
+│   │   ...
+│
+└───utils
+    │   formatData.js
+    │   validateInputs.js
+    │   ...
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Features
 
-### `npm run eject`
+The code editor has the following features:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Code Editing: The code editor is powered by the Monaco Editor, which provides syntax highlighting and autocomplete for over 40 programming languages. This makes it a powerful tool for developers to write and edit code.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Compiling and Executing Code: The code editor can compile and execute code on a web app with standard input and output. It supports a wide range of programming languages, allowing users to write and execute code in their language of choice.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Customizable Themes: The user can choose from a list of available themes to personalize the appearance of the code editor.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. Execution Information: The user can view information about the execution of their compiled code, such as the time taken and the memory used. This provides insight into the performance of the code.
 
-## Learn More
+## Conclusion
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This online code editor is a powerful tool for writing and executing code in a variety of programming languages. Its Monaco Editor provides syntax highlighting and autocomplete, making it a user-friendly and efficient tool for developers. The customizable themes and execution information provide additional functionality and insight for the user.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Overall, the tech stack and project structure work together to provide a seamless experience for the user, and the combination of React.js, TailwindCSS, Judge0, RapidAPI, and the Monaco Editor make it a well-rounded and effective code editor.
