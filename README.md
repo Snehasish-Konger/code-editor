@@ -34,6 +34,14 @@ Project-Online-Compiler
 │   package.json
 │   ...
 │
+|───public
+│   │   index.html
+│   │   ...
+│
+└───src
+│   │   index.js
+│   │   ...
+│
 └───components
 │   │   CodeEditorWindow.js
 │   │   Landing.js
