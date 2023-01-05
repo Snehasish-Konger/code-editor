@@ -3,8 +3,8 @@ import logo from "../sitelogo.svg";
 
 const Footer = () => {
   return (
-    <footer class="text-center lg:text-left bg-gray-100 text-gray-600">
-  <div class="flex justify-center items-center lg:justify-between p-6 border-b border-gray-300">
+    <footer class="text-center border-t border-black lg:text-left mt-6 text-gray-600">
+  <div class="flex justify-center items-center lg:justify-between p-6 border-b border-black">
     <div class="mr-12 hidden lg:block">
       <span>Get connected with us on social networks:</span>
     </div>
@@ -98,7 +98,7 @@ const Footer = () => {
       </div>
     </div>
   </div>
-  <div class="text-center p-6 bg-gray-200">
+  <div class="text-center p-2 border-t border-black">
     <span>© 2023 Copyright:</span>
     <a class="text-gray-600 font-semibold" href="https://scientyficworld.org">Scientyfic World</a>
   </div>

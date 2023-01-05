@@ -202,11 +202,11 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-        <div className="h-5 w-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500">
+        {/* <div className="h-5 w-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500">
           <span className="text-white text-md font-bold flex items-center justify-center">
             This Code editor is under development.
           </span>
-        </div>
+        </div> */}
       <div className="flex flex-col w-full h-full justify-start items-center">
         <Header/>
       </div>
@@ -242,7 +242,7 @@ const Landing = () => {
                 onClick={handleCompile}
                 disabled={!code}
                 className={classnames(
-                  "mt-4 border-2 border-black z-10 rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 bg-white flex-shrink-0",
+                  "mt-4 border-2 border-black z-10 rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 bg-[#9cff8f] flex-shrink-0",
                   !code ? "opacity-50" : ""
                 )}
               >
