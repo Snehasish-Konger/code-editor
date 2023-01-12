@@ -202,7 +202,7 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-        {/* <div className="h-5 w-full bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500">
+        {/* <div className="h-5 w-full bg-gradient-to-r from-blue-400 to-emerald-400">
           <span className="text-white text-md font-bold flex items-center justify-center">
             This Code editor is under development.
           </span>
