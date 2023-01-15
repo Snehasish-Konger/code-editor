@@ -4,7 +4,7 @@ import Editor from "@monaco-editor/react";
 const CodeEditorWindow = ({ onChange, language, code, theme }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [tabs, setTabs] = useState([
-    { value: code || "", language: language || "clang", fileName: "New File" },
+    { value: code || "", language: language || "clang", fileName: "Main" },
   ]);
 
   const handleEditorChange = (value, index) => {
@@ -46,7 +46,7 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
 
   return (
     <div className="overlay rounded-lg overflow-hidden w-full h-full shadow-4xl">
-      <div className="flex justify-between items-center bg-gray-100 text-gray-800 p-2">
+      <div className="flex justify-between items-center bg-gray-800 text-gray-100 p-2">
         <div className="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -64,40 +64,16 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
           </svg>
           <input
             type="text"
-            className="bg-gray-100 text-gray-800 w-32 ml-2"
+            className="bg-gray-800 text-gray-100 text:border-none"
             placeholder="File name"
             value={tabs[activeTab].fileName}
             onChange={(e) => handleFileNameChange(e, activeTab)}
           />
-          <span className="text-gray-800">.{language}</span>
-          {tabs.map((tab, index) => (
-            <div
-              key={index}
-              className={`tab-nav-item ${activeTab === index ? "active" : ""}`}
-              onClick={() => setActiveTab(index)}
-            >
-              <button onClick={() => handleDeleteEditor(index)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-          ))}
+          <span className="text-gray-100">.{language}</span>
         </div>
         <div className="flex items-center">
           <button
-            className="text-gray-800 p-2 rounded-lg"
+            className="text-gray-100 p-2 rounded-lg"
             onClick={handleNewFile}
           >
             <svg
@@ -115,9 +91,27 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
               />
             </svg>
           </button>
-
+          {tabs.map((index) => (
+            <div
+              key={index}
+              className={`tab-nav-item ${activeTab === index ? "active" : ""}`}
+              onClick={() => setActiveTab(index)}
+            >
+              <button onClick={() => handleDeleteEditor(index)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          ))}
           <button
-            className="text-gray-800 p-2 rounded-lg"
+            className="text-gray-100 p-2 rounded-lg"
             onClick={() => handleDownload(activeTab)}
           >
             <svg

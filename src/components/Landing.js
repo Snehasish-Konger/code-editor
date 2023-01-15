@@ -202,11 +202,11 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-        {/* <div className="h-5 w-full bg-gradient-to-r from-blue-400 to-emerald-400">
+        <div className="h-5 w-full bg-gradient-to-r from-blue-400 to-emerald-400">
           <span className="text-white text-md font-bold flex items-center justify-center">
             This Code editor is under development.
           </span>
-        </div> */}
+        </div>
       <div className="flex flex-col w-full h-full justify-start items-center">
         <Header/>
       </div>
