@@ -39,7 +39,7 @@ const Landing = () => {
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
-  const [theme, setTheme] = useState("cobalt");
+  const [theme, setTheme] = useState("github");
   const [language, setLanguage] = useState(lang[4]);
 
   const enterPress = useKeyPress("Enter");
@@ -49,7 +49,6 @@ const Landing = () => {
     console.log("selected Option...", sl);
     setLanguage(sl);
   };
-
   useEffect(() => {
     if (enterPress && ctrlPress) {
       console.log("enterPress", enterPress);
@@ -161,8 +160,8 @@ const Landing = () => {
     }
   }
   useEffect(() => {
-    defineTheme("oceanic-next").then((_) =>
-      setTheme({ value: "oceanic-next", label: "Oceanic Next" })
+    defineTheme("active4d").then((_) =>
+      setTheme({ value: "active4d", label: "Active4D" })
     );
   }, []);
 
@@ -202,11 +201,11 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-        <div className="h-5 w-full bg-gradient-to-r from-blue-400 to-emerald-400">
+        {/* <div className="h-5 w-full bg-gradient-to-r from-blue-400 to-emerald-400">
           <span className="text-white text-md font-bold flex items-center justify-center">
             This Code editor is under development.
           </span>
-        </div>
+        </div> */}
       <div className="flex flex-col w-full h-full justify-start items-center">
         <Header/>
       </div>

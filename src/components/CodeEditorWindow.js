@@ -43,7 +43,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
           />
-          <span className="text-gray-800">.{extension}</span>
+          <span className="text-gray-800 font-bold text-lg">.{extension}</span>
         </div>
         <div className="flex items-center">
           <button
