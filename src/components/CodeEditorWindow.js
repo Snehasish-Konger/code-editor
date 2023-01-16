@@ -1,62 +1,27 @@
 import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 
-const CodeEditorWindow = ({ onChange, language, code, theme }) => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [tabs, setTabs] = useState([
-    { value: code || "", language: language || "clang", fileName: "Main" },
-  ]);
+const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
+  const [value, setValue] = useState(code || "");
+  const [fileName, setFileName] = useState("Untitled");
 
-  const handleEditorChange = (value, index) => {
-    const newTabs = [...tabs];
-    newTabs[index].value = value;
-    setTabs(newTabs);
+  const handleEditorChange = (value) => {
+    setValue(value);
     onChange("code", value);
   };
 
-  const handleFileNameChange = (e, index) => {
-    const newTabs = [...tabs];
-    newTabs[index].fileName = e.target.value;
-    setTabs(newTabs);
+  const handleDownload = () => {
+    const element = document.createElement("a");
+    const file = new Blob([value], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = `${fileName}.${extension}`;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
   };
-
-  const handleNewFile = () => {
-    setTabs([...tabs, { value: "", language: "clang", fileName: "New File" }]);
-    setActiveTab(tabs.length);
-    onChange("code", "");
-  };
-
-  const handleDeleteEditor = (index) => {
-    const newTabs = [...tabs];
-    newTabs.splice(index, 1);
-    setTabs(newTabs);
-    if (activeTab === index) {
-      setActiveTab(0);
-    }
-    else if (activeTab > index) {
-      setActiveTab(activeTab - 1);
-    }
-  };
-
-  const handleDownload = (activeTab) => {
-    const file = new Blob([tabs[activeTab].value], { type: "text/plain" });
-    const fileUrl = URL.createObjectURL(file);
-    const link = document.createElement("a");
-    link.href = fileUrl;
-    link.download = `${tabs[activeTab].fileName}.${tabs[activeTab].language}`;
-    link.click();
-  };
-
-  const handleNavigate = (index) => {
-    setActiveTab(index);
-    onChange("code", tabs[index].value);
-    Editor.current.setValue(tabs[index].value);
-  };
-  
 
   return (
-    <div className="overlay rounded-lg overflow-hidden w-full h-full shadow-4xl border-2 border-black">
-      <div className="flex justify-between items-center bg-gray-800 text-gray-100 p-2">
+    <div className="overlay rounded-md overflow-hidden w-full h-full shadow-4xl border-2 border-gray-900">
+      <div className="flex justify-between items-center bg-[#e7ecf0] text-gray-800 p-2 border-b-2 border-gray-900">
         <div className="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,65 +38,17 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
             />
           </svg>
           <input
+            className="bg-transparent focus:outline-none text-gray-800 p-2"
             type="text"
-            className="bg-gray-800 text-gray-100 text:border-none"
-            placeholder="File name"
-            value={tabs[activeTab].fileName}
-            onChange={(e) => handleFileNameChange(e, activeTab)}
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
           />
-          <span className="text-gray-100">.{language}</span>
-          {tabs.map((tab, index) => (
-          <div
-            key={index}
-            className={`tab ${activeTab === index ? "active" : ""}`}
-            onClick={() => setActiveTab(index)}
-          >
-            <button onClick={() => handleNavigate(index)}>{tab.fileName}</button>
-            <button
-              className="text-gray-100 p-2 rounded-lg"
-              onClick={() => handleDeleteEditor(index)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-        ))}
+          <span className="text-gray-800">.{extension}</span>
         </div>
         <div className="flex items-center">
           <button
-            className="text-gray-100 p-2 rounded-lg"
-            onClick={handleNewFile}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-          </button>
-          <button
-            className="text-gray-100 p-2 rounded-lg"
-            onClick={() => handleDownload(activeTab)}
+            className="text-gray-800 p-2 rounded-lg"
+            onClick={handleDownload}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -150,16 +67,16 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
           </button>
         </div>
       </div>
-        <Editor
-          height="85vh"
-          width={`100%`}
-          defaultLanguage={tabs[activeTab].language}
-          defaultValue={tabs[activeTab].value}
-          onChange={(value) => handleEditorChange(value, activeTab)}
-          theme={theme}
-        />
+      <Editor
+        height="85vh"
+        width={`100%`}
+        language={language || "javascript"}
+        value={value}
+        theme={theme}
+        defaultValue="// some comment"
+        onChange={handleEditorChange}
+      />
     </div>
   );
 };
-
 export default CodeEditorWindow;

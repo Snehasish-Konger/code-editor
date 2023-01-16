@@ -227,6 +227,7 @@ const Landing = () => {
               code={code}
               onChange={onChange}
               language={language?.value}
+              extension={language?.extension}
               theme={theme.value}
             />
           </div>
