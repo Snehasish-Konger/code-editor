@@ -235,12 +235,12 @@ const Landing = () => {
                 </svg>
                 <div class="space-y-2">
                   <p class="text-slate-800">
-                    Learn how to make a glowing gradient background!
-                    <a href="/" class="block text-indigo-400 group-hover:text-slate-800 transition duration-200" target="_blank"
+                    We're working on some new features and we'll be back soon once we're done. Meanwhile, you can write, compile and run your code here.
+                    {/* <a href="/" class="block text-indigo-400 group-hover:text-slate-800 transition duration-200" target="_blank"
                       rel="noreferrer noopener"
                     >
-                      Feedback →
-                    </a>
+                      Go to Home
+                    </a> */}
                   </p>
                 </div>
               </div>
