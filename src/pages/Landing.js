@@ -47,7 +47,7 @@ const Landing = () => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("github");
   const [language, setLanguage] = useState(lang[4]);
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal /*,setShowModal*/] = React.useState(true);
 
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
@@ -208,12 +208,12 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-      <div className="h-5 w-full bg-gradient-to-r from-purple-600 via-yellow-300 to-pink-600">
+      {/* <div className="h-5 w-full bg-gradient-to-r from-purple-600 via-yellow-300 to-pink-600">
         <span
           className="text-black text-md font-bold flex items-center justify-center cursor-pointer"
           onClick={() => setShowModal(true)}
         >Under Development</span>
-      </div>
+      </div> */}
       {showModal ? (
         <div class="flex flex-col justify-center relative overflow-hidden sm:py-12 z-100">
           <div class="max-w-7xl mx-auto">
@@ -235,7 +235,8 @@ const Landing = () => {
                 </svg>
                 <div class="space-y-2">
                   <p class="text-slate-800">
-                    We're working on some new features and we'll be back soon once we're done. Meanwhile, you can write, compile and run your code here.
+                    We're working on some new features and we'll be back soon once we're done. Meanwhile, you can write, compile and run your code here.</p>
+                    <p>Enjoy Coding 🧑🏻‍💻☕ :)
                     {/* <a href="/" class="block text-indigo-400 group-hover:text-slate-800 transition duration-200" target="_blank"
                       rel="noreferrer noopener"
                     >
