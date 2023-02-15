@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { defineTheme } from "../lib/defineTheme";
 import useKeyPress from "../hooks/useKeyPress";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 import OutputWindow from "../components/OutputWindow";
 import CustomInput from "../components/CustomInput";
@@ -24,12 +23,19 @@ You can write code in any of the languages supported by the compiler.
 You can also write your own custom input and see the output.
 You can also change the theme of the editor.
 **************************************************/
-
-// C program to print Hello World
+// Sample C code
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
 int main() {
-    // printf() displays the string inside quotation
-    printf("Hello, Programmer!");
+    int a, b;
+    float c, d;
+    scanf("%d %d", &a, &b);
+    scanf("%f %f", &c, &d);
+    printf("%d %d", a+b, a-b);
+    printf(" %.1f %.1f", c+d, c-d);
     return 0;
 }
 `;
@@ -206,14 +212,10 @@ const Landing = () => {
         <span
           className="text-black text-md font-bold flex items-center justify-center cursor-pointer"
           onClick={() => setShowModal(true)}
-        >Give Us your Feedback</span>
-      </div>
-
-      <div className="flex flex-col w-full h-full justify-start items-center">
-        <Header />
+        >Under Development</span>
       </div>
       {showModal ? (
-        <div class="bg-gray-50 flex flex-col justify-center relative overflow-hidden sm:py-12 z-100">
+        <div class="flex flex-col justify-center relative overflow-hidden sm:py-12 z-100">
           <div class="max-w-7xl mx-auto">
             <div class="relative group">
               <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
@@ -234,13 +236,10 @@ const Landing = () => {
                 <div class="space-y-2">
                   <p class="text-slate-800">
                     Learn how to make a glowing gradient background!
-                    <a
-                      href="https://www.youtube.com/watch?v=Q7AOvWpIVHU"
-                      class="block text-indigo-400 group-hover:text-slate-800 transition duration-200"
-                      target="_blank"
-                      rel="noreferrer"
+                    <a href="/" class="block text-indigo-400 group-hover:text-slate-800 transition duration-200" target="_blank"
+                      rel="noreferrer noopener"
                     >
-                      Read Article →
+                      Feedback →
                     </a>
                   </p>
                 </div>
