@@ -21,7 +21,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
 
   return (
     <div className="overlay rounded-md overflow-hidden w-full h-full shadow-4xl border-2 border-gray-900">
-      <div className="flex justify-between items-center bg-[#e7ecf0] text-gray-800 p-2 border-b-2 border-gray-900">
+      <div className="flex justify-between items-center bg-[#cbcaf9] text-gray-800 p-2 border-b-2 border-gray-900">
         <div className="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
