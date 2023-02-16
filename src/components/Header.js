@@ -1,12 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import logo from "../sitelogo.svg";
-import { useAuth0 } from "@auth0/auth0-react";
 
 
 export default function Header() {
     const [navbar, setNavbar] = useState(false);
-    const { loginWithRedirect, user, logout, isAuthenticated } = useAuth0();
     return (
         <nav className="w-full border-b border-black mb-2">
             <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
@@ -74,38 +72,6 @@ export default function Header() {
                             <li className="text-gray-600 hover:text-blue-600">
                                 <a href="https://scientyficworld.org/contact-us/">Contact US</a>
                             </li>
-                            {isAuthenticated ? (
-                
-                <li>
-                  <div class="flex flex-col">
-                    <a href="/profile">
-                    <img
-                      style={{ width: "50%", borderRadius: "100%" }}
-                      src={user.picture}
-                      alt={user.name}
-                      className="d-inline-block"
-                    />
-                    </a>
-                      <button
-                        className="home-btn"
-                        onClick={() =>
-                          logout({ returnTo: window.location.origin })
-                        }
-                      >
-                        Log Out
-                      </button>
-                    </div>
-                </li>
-              ) : (
-                <li>
-                  <button
-                    className="home-btn"
-                    onClick={() => loginWithRedirect()}
-                  >
-                    Log In
-                  </button>
-                </li>
-              )}
                         </ul>
                     </div>
                 </div>
