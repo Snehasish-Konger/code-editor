@@ -83,3 +83,29 @@ The code editor has the following features:
 This online code editor is a powerful tool for writing and executing code in a variety of programming languages. Its Monaco Editor provides syntax highlighting and autocomplete, making it a user-friendly and efficient tool for developers. The customizable themes and execution information provide additional functionality and insight for the user.
 
 Overall, the tech stack and project structure work together to provide a seamless experience for the user, and the combination of React.js, TailwindCSS, Judge0, RapidAPI, and the Monaco Editor make it a well-rounded and effective code editor.
+
+## Future Scope
+
+1. Live Collaboration - Allow multiple users to work on the same code in real-time, making it ideal for pair programming and group projects.
+
+2. Code Autocomplete - As a user types, the IDE will automatically suggest completions for function and variable names.
+
+3. Code Commenting - Allow users to easily add comments to their code, making it easier to understand and maintain.
+
+4. Machine Learning Integration - Integrate machine learning models that can predict the next lines of code that a user may need, based on the code they have written so far.
+
+5. Gamification - Add a gamification element to the IDE that rewards users for writing clean, efficient code and completing coding challenges.
+
+6. Built-in Debugging - Provide an integrated debugger that can help users identify and fix errors in their code.
+
+7. Code Quality Metrics - Provide real-time feedback on the quality of the code, including readability, complexity, and adherence to coding standards.
+
+8. Cloud Storage Integration - Allow users to save their code to cloud storage services like Google Drive or Dropbox.
+
+9. Version Control - Integrate version control tools like Git to allow users to track changes to their code over time.
+
+10. Test Case Generation - Generate test cases for the user's code, allowing them to test their code against a variety of inputs.
+
+11. Add multiple files - Allow users to add multiple files to their project, making it easier to organize their code.
+
+
