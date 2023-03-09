@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 
+
 const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
   const [value, setValue] = useState(code || "");
   const [fileName, setFileName] = useState("Untitled");
+
+
 
   const handleEditorChange = (value) => {
     setValue(value);
@@ -36,8 +39,6 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
     };
     input.click();
   };
-
-  
 
   return (
     <div className="overlay rounded-md overflow-hidden w-full h-full shadow-4xl border-2 border-gray-900">
