@@ -17,10 +17,8 @@ import ThemeDropdown from "../components/ThemeDropdown";
 import LanguagesDropdown from "../components/LanguagesDropdown";
 
 const Default = `/**************************************************
-Welcome to the Our Playground!
-This is a simple code editor with a compiler and a console.
 You can write code in any of the languages supported by the compiler.
-You can also write your own custom input and see the output.
+You can also write your own custom input and see the output. ( Give the input prior to running the code smoothly.)
 You can also change the theme of the editor.
 **************************************************/
 // Sample C code
@@ -47,8 +45,6 @@ const Landing = () => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("github");
   const [language, setLanguage] = useState(lang[4]);
-  const [showModal /*,setShowModal*/] = React.useState(true);
-
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
@@ -208,47 +204,25 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-      {/* <div className="h-5 w-full bg-gradient-to-r from-purple-600 via-yellow-300 to-pink-600">
-        <span
-          className="text-black text-md font-bold flex items-center justify-center cursor-pointer"
-          onClick={() => setShowModal(true)}
-        >Under Development</span>
-      </div> */}
-      {showModal ? (
-        <div class="flex flex-col justify-center relative overflow-hidden sm:py-12 z-100">
-          <div class="max-w-7xl mx-auto">
-            <div class="relative group">
-              <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-              <div class="relative px-7 py-6 bg-white ring-1 ring-gray-900/5 rounded-lg leading-none flex items-top justify-start space-x-6">
-                <svg
-                  class="w-8 h-8 text-purple-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M6.75 6.75C6.75 5.64543 7.64543 4.75 8.75 4.75H15.25C16.3546 4.75 17.25 5.64543 17.25 6.75V19.25L12 14.75L6.75 19.25V6.75Z"
-                  ></path>
-                </svg>
-                <div class="space-y-2">
-                  <p class="text-slate-800">
-                    We're working on some new features and we'll be back soon once we're done. Meanwhile, you can write, compile and run your code here.</p>
-                    <p>Enjoy Coding 🧑🏻‍💻☕ :)
-                    {/* <a href="/" class="block text-indigo-400 group-hover:text-slate-800 transition duration-200" target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      Go to Home
-                    </a> */}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="text-center py-4 lg:px-4">
+        <div
+          class="p-2  border-2 border-black bg-[#5563fd] items-center text-indigo-100 leading-none rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 flex-shrink-0 lg:inline-flex"
+          role="alert"
+        >
+          <span class="font-semibold mr-2 text-left flex-auto">
+            Your Feedback is important to us. Please share your feedback here
+          </span>
+          <a href="https://forms.gle/kwMGsyT6jwujcqiZA" target="_blank" rel="noreferrer noopener">
+          <svg
+            class="fill-current opacity-75 h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
+          </svg>
+          </a>
         </div>
-      ) : null}
+      </div>
 
       <div className="md:flex flex-row">
         <div className="px-4 py-2">
