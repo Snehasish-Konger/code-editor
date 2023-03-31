@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { defineTheme } from "../lib/defineTheme";
 import useKeyPress from "../hooks/useKeyPress";
-import Footer from "../components/Footer";
 import OutputWindow from "../components/OutputWindow";
 import CustomInput from "../components/CustomInput";
 import OutputDetails from "../components/OutputDetails";
@@ -206,7 +205,7 @@ const Landing = () => {
       />
       <div class="text-center py-4 lg:px-4">
         <div
-          class="p-2  border-2 border-black bg-[#5563fd] items-center text-indigo-100 leading-none rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 flex-shrink-0 lg:inline-flex"
+          class="p-2  border-2 border-black bg-[#e2e4ff] items-center text-black leading-none rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 flex-shrink-0 lg:inline-flex"
           role="alert"
         >
           <span class="font-semibold mr-2 text-left flex-auto">
@@ -264,7 +263,6 @@ const Landing = () => {
           {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
       </div>
-      <Footer />
     </>
   );
 };

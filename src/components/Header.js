@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import logo from "../sitelogo.svg";
+import logo from "../images/sitelogo.svg";
 
 
 export default function Header() {

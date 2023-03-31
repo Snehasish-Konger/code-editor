@@ -7,6 +7,8 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import Testimonials from "./components/Testimonials";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -17,8 +19,10 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/reviews" element={<Testimonials/>} />
       </Routes>
     </Router>
+    <Footer/>
     </>
   );
 }

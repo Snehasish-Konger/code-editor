@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../sitelogo.svg";
+import logo from "../images/sitelogo.svg";
 
 const Footer = () => {
   return (
@@ -63,7 +63,7 @@ const Footer = () => {
         </p>
       </div>
       <div class="">
-        <h6 class="uppercase font-semibold mb-4 flex justify-center md:justify-start">
+        <h6 class="uppercase font-semibold mb-5 flex justify-center md:justify-start">
           Useful links
         </h6>
         <p class="mb-4">
@@ -77,6 +77,9 @@ const Footer = () => {
         </p>
         <p>
           <a href="https://scientyficworld.org/contact-us/" class="text-gray-600">Contact Us</a>
+        </p>
+        <p>
+          <a href="/reviews" class="text-gray-600">Reviews</a>
         </p>
       </div>
       <div class="">
