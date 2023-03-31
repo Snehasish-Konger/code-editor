@@ -82,7 +82,7 @@ const Testimonials = () => {
                     </div>
                     <div class="flex-grow pl-3">
                       <h6 class="font-bold text-sm uppercase text-gray-600">
-                        Anushka Dua, India.
+                        Ritika Barui, India.
                       </h6>
                     </div>
                   </div>
@@ -91,12 +91,9 @@ const Testimonials = () => {
                       <span class="text-lg leading-none italic font-bold text-gray-400 mr-1">
                         "
                       </span>
-                      I've been using this IDE for a while now, and I have to
-                      say it's one of the best I've ever used. I love the fact
-                      that it supports so many programming languages, and the
-                      error feedback is really helpful. Plus, the storage
-                      feature makes it easy for me to access my code from
-                      anywhere. Thanks, team
+                      It is a clean site with a flawless look, and someone
+                      without any technical background would definitely
+                      appreciate it.
                       <span class="text-lg leading-none italic font-bold text-gray-400 ml-1">
                         "
                       </span>

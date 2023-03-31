@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import logo from "../images/sitelogo.svg";
-
+import { Link } from "react-router-dom";
 
 export default function Header() {
     const [navbar, setNavbar] = useState(false);
@@ -61,16 +61,16 @@ export default function Header() {
                     >
                         <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                             <li className="text-gray-600 hover:text-blue-600">
-                                <a href="https://scientyficworld.org/">Home</a>
+                                <Link to="https://scientyficworld.org/">Home</Link>
                             </li>
                             <li className="text-gray-600 hover:text-blue-600">
-                                <a href="https://scientyficworld.org/blog/">Blog</a>
+                                <Link to="https://scientyficworld.org/blog/">Blog</Link>
                             </li>
                             <li className="text-gray-600 hover:text-blue-600">
-                                <a href="https://scientyficworld.org/snehasish-konger/">About</a>
+                                <Link to="https://scientyficworld.org/snehasish-konger/">About</Link>
                             </li>
                             <li className="text-gray-600 hover:text-blue-600">
-                                <a href="https://scientyficworld.org/contact-us/">Contact US</a>
+                                <Link to="https://scientyficworld.org/contact-us/">Contact US</Link>
                             </li>
                         </ul>
                     </div>
