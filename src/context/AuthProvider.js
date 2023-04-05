@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {initializeApp} from 'firebase/app';
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import {getFirestore, collection, addDoc, updateDoc} from 'firebase/firestore';
+import {getFirestore, collection, getDocs, where, query, addDoc, updateDoc} from 'firebase/firestore';
 
 
 export const AuthContext = React.createContext();
@@ -30,25 +30,27 @@ const AuthProvider = (props) => {
     try {
       const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = res.user;
-      await addDoc(collection(db, "users"), {
-        username: data.displayName,
-        email: data.email,
-        photoURL: data.photoURL,
-        phoneNumber: data.phoneNumber,
-        dateofBirthday: data.dateofBirthday,
-        agentGender: data.agentGender,
-        preferredLanguage: data.preferredLanguage,
-        address: data.address,
+      const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        await addDoc(collection(db, 'users'), {
+        username: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
         authProvider: "email",
       });
       setUser(user);
       setLoggedIn(true);
       navigate('/');
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+    } else {
+      console.log('User already exists');
+      signIn(user.email, user.uid);
     }
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode, errorMessage);
+  }
   };
 
 
@@ -96,11 +98,7 @@ const AuthProvider = (props) => {
     return await updateDoc(collection(db, "users"), {
       name: user.displayName,
       email: user.email,
-      phoneNumber: user.phoneNumber,
-      dateofBirthday: user.dateofBirthday,
-      agentGender: user.agentGender,
-      preferredLanguage: user.preferredLanguage,
-      address: user.address,
+      photoURL: user.photoURL,
       describeYourself: user.describeYourself,
       authProvider: "email",
     });
