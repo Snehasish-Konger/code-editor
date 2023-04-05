@@ -1,6 +1,8 @@
 import React from "react";
 import male from "../images/male.svg";
 import female from "../images/female.svg";
+// import Numbers from "./Numbers";
+import FAQ from "./FAQ";
 
 const Testimonials = () => {
   return (
@@ -56,7 +58,7 @@ const Testimonials = () => {
                     </div>
                     <div class="flex-grow pl-3">
                       <h6 class="font-bold text-sm uppercase text-gray-600">
-                        Yuvraj Jwala, India.
+                        Yuvraj Jwala.
                       </h6>
                     </div>
                   </div>
@@ -82,7 +84,7 @@ const Testimonials = () => {
                     </div>
                     <div class="flex-grow pl-3">
                       <h6 class="font-bold text-sm uppercase text-gray-600">
-                        Ritika Barui, India.
+                        Ritika Barui.
                       </h6>
                     </div>
                   </div>
@@ -105,11 +107,11 @@ const Testimonials = () => {
                 <div class="w-full mx-auto rounded-lg bg-white border border-gray-200 p-5 text-gray-800 font-light mb-6">
                   <div class="w-full flex mb-4 items-center">
                     <div class="overflow-hidden rounded-full w-10 h-10 bg-gray-50 border border-gray-200">
-                      <img src={male} alt="" />
+                      <img src={female} alt="" />
                     </div>
                     <div class="flex-grow pl-3">
                       <h6 class="font-bold text-sm uppercase text-gray-600">
-                        Michael Smith, USA.
+                        Tithi Roy.
                       </h6>
                     </div>
                   </div>
@@ -118,11 +120,9 @@ const Testimonials = () => {
                       <span class="text-lg leading-none italic font-bold text-gray-400 mr-1">
                         "
                       </span>
-                      I've been using this IDE for my C# projects, and I have to
-                      say it's one of the best I've ever used. The error
-                      feedback is really helpful, and I love how the IDE
-                      integrates with other tools like Judge0 and RapidAPI.
-                      Thanks for making coding so much easier!
+                      Really liked it. I think, a little change will be for
+                      better. It'd be better if there's a "Log in" for easy
+                      accessing the previous codes
                       <span class="text-lg leading-none italic font-bold text-gray-400 ml-1">
                         "
                       </span>
@@ -136,7 +136,7 @@ const Testimonials = () => {
                     </div>
                     <div class="flex-grow pl-3">
                       <h6 class="font-bold text-sm uppercase text-gray-600">
-                        Rakesh Tiwari, India.
+                        Rakesh Tiwari.
                       </h6>
                     </div>
                   </div>
@@ -166,7 +166,7 @@ const Testimonials = () => {
                     </div>
                     <div class="flex-grow pl-3">
                       <h6 class="font-bold text-sm uppercase text-gray-600">
-                        Kalpana Sharma, India.
+                        Kalpana Sharma.
                       </h6>
                     </div>
                   </div>
@@ -193,7 +193,7 @@ const Testimonials = () => {
                     </div>
                     <div class="flex-grow pl-3">
                       <h6 class="font-bold text-sm uppercase text-gray-600">
-                        Suresh Kumar, India.
+                        Suresh Kumar.
                       </h6>
                     </div>
                   </div>
@@ -214,6 +214,7 @@ const Testimonials = () => {
           </div>
         </div>
       </div>
+      <FAQ />
     </>
   );
 };

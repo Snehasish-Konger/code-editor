@@ -190,6 +190,43 @@ const Landing = () => {
     });
   };
 
+  // const handleSaveCode = () => {
+  //   const codeObj = {
+  //     code,
+  //     language,
+  //   };
+  //   localStorage.setItem("codeObj", JSON.stringify(codeObj));
+  //   // The code will be saved on the hostinger database
+  //   const codeObjStr = JSON.stringify(codeObj);
+  //   const codeObjStrEncoded = btoa(codeObjStr);
+  //   const url = `${window.location.origin}/share/${codeObjStrEncoded}`;
+  //   navigator.clipboard.writeText(url);
+  //   showSuccessToast(`Code Saved Successfully!`);
+  // };
+  // const handleLoadCode = () => {
+  //   const codeObj = JSON.parse(localStorage.getItem("codeObj"));
+  //   if (codeObj) {
+  //     setCode(codeObj.code);
+  //     setLanguage(codeObj.language);
+  //     setCustomInput(codeObj.customInput);
+  //     showSuccessToast(`Code Loaded Successfully!`);
+  //   } else {
+  //     showErrorToast(`No Code Saved!`);
+  //   }
+  // };
+  // const handleShareCode = () => {
+  //   const codeObj = {
+  //     code,
+  //     language,
+  //     customInput,
+  //   };
+  //   const codeObjStr = JSON.stringify(codeObj);
+  //   const codeObjStrEncoded = btoa(codeObjStr);
+  //   const url = `${window.location.origin}/share/${codeObjStrEncoded}`;
+  //   navigator.clipboard.writeText(url);
+  //   showSuccessToast(`Code Shared Successfully!`);
+  // };
+
   return (
     <>
       <ToastContainer
@@ -209,20 +246,23 @@ const Landing = () => {
           role="alert"
         >
           <span class="font-semibold mr-2 text-left flex-auto">
-            Your Feedback is important to us. Please share your feedback here
+            Your Feedback matters! Please fill this form to help us improve
           </span>
-          <a href="https://forms.gle/kwMGsyT6jwujcqiZA" target="_blank" rel="noreferrer noopener">
-          <svg
-            class="fill-current opacity-75 h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
+          <a
+            href="https://forms.gle/kwMGsyT6jwujcqiZA"
+            target="_blank"
+            rel="noreferrer noopener"
           >
-            <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
-          </svg>
+            <svg
+              class="fill-current opacity-75 h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
+            </svg>
           </a>
         </div>
       </div>
-
       <div className="md:flex flex-row">
         <div className="px-4 py-2">
           <LanguagesDropdown onSelectChange={onSelectChange} />
@@ -230,6 +270,53 @@ const Landing = () => {
         <div className="px-4 py-2">
           <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
         </div>
+        {/* <div className="md:flex flex-row">
+          <div className="px-4 py-2">
+            <button onClick={handleSaveCode} title="Save Code">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-save"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z" />{" "}
+              </svg>
+            </button>
+          </div>
+          <div className="px-4 py-2">
+            <button onClick={handleLoadCode} title="Load Code">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-arrow-clockwise"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"
+                />
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />{" "}
+              </svg>
+            </button>
+          </div>
+          <div className="px-4 py-2">
+            <button onClick={handleShareCode} title="Share Code">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-share"
+                viewBox="0 0 16 16"
+              ><path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />{" "}
+              </svg>
+            </button>
+          </div>
+        </div> */}
       </div>
       <div className="md:flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end">

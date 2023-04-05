@@ -1,18 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router } from 'react-router-dom';
-import history from './utils/history';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter as Router } from "react-router-dom";
+import history from "./utils/history";
+import AuthProvider from "./context/AuthProvider";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Router basename="/" history={history}>
-    <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </Router>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.Fragment>,
+  document.getElementById("root")
 );
 
 reportWebVitals();

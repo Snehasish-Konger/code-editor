@@ -68,7 +68,7 @@ const Footer = () => {
           Useful links
         </h6>
         <p class="mb-4">
-          <Link to="https://scientyficworld.org/" class="text-gray-600">Home</Link>
+          <Link to="https://scientyficworld.org/" class="text-gray-600">← Back to Home</Link>
         </p>
         <p class="mb-4">
           <Link to="https://scientyficworld.org/blog/" class="text-gray-600">Blog</Link>
