@@ -94,7 +94,7 @@ const AuthProvider = (props) => {
     });
   }, []);
 
-  const createOrUpdateAgent = async (user) => {
+  const updateUser = async (user) => {
     return await updateDoc(collection(db, "users"), {
       name: user.displayName,
       email: user.email,
@@ -111,7 +111,7 @@ const AuthProvider = (props) => {
         signIn,
         signUp,
         user,
-        createOrUpdateAgent,
+        updateUser,
       }}
     >
       <>{props.children}</>
