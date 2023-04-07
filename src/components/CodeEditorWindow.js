@@ -46,7 +46,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-body-text"
+            className="bi bi-body-text"
             viewBox="0 0 16 16"
           >
             <path
@@ -118,7 +118,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
+              className="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

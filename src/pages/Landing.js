@@ -14,6 +14,8 @@ import CustomInput from "../components/CustomInput";
 import OutputDetails from "../components/OutputDetails";
 import ThemeDropdown from "../components/ThemeDropdown";
 import LanguagesDropdown from "../components/LanguagesDropdown";
+// import { AuthContext } from "../context/AuthProvider";
+// import { getFirestore, addDoc, collection } from "firebase/firestore";
 
 const Default = `/**************************************************
 You can write code in any of the languages supported by the compiler.
@@ -46,6 +48,24 @@ const Landing = () => {
   const [language, setLanguage] = useState(lang[4]);
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
+  // const { app, loggedIn } = React.useContext(AuthContext);
+
+  // const handleSaveCode = async () => {
+  //   if (!loggedIn) {
+  //     toast.error("Please login to save the code");
+  //     return;
+  //   } else if (code === Default) {
+  //     const db = getFirestore(app);
+  //     const userRef = await addDoc(collection(db, "users"), {
+  //       code: code,
+  //       language: language,
+  //       theme: theme,
+  //       customInput: customInput,
+  //     });
+  //     console.log("Document written with ID: ", userRef.id);
+  //     toast.success("Code saved successfully");
+  //   }
+  // };
 
   const onSelectChange = (sl) => {
     console.log("selected Option...", sl);
@@ -190,43 +210,6 @@ const Landing = () => {
     });
   };
 
-  // const handleSaveCode = () => {
-  //   const codeObj = {
-  //     code,
-  //     language,
-  //   };
-  //   localStorage.setItem("codeObj", JSON.stringify(codeObj));
-  //   // The code will be saved on the hostinger database
-  //   const codeObjStr = JSON.stringify(codeObj);
-  //   const codeObjStrEncoded = btoa(codeObjStr);
-  //   const url = `${window.location.origin}/share/${codeObjStrEncoded}`;
-  //   navigator.clipboard.writeText(url);
-  //   showSuccessToast(`Code Saved Successfully!`);
-  // };
-  // const handleLoadCode = () => {
-  //   const codeObj = JSON.parse(localStorage.getItem("codeObj"));
-  //   if (codeObj) {
-  //     setCode(codeObj.code);
-  //     setLanguage(codeObj.language);
-  //     setCustomInput(codeObj.customInput);
-  //     showSuccessToast(`Code Loaded Successfully!`);
-  //   } else {
-  //     showErrorToast(`No Code Saved!`);
-  //   }
-  // };
-  // const handleShareCode = () => {
-  //   const codeObj = {
-  //     code,
-  //     language,
-  //     customInput,
-  //   };
-  //   const codeObjStr = JSON.stringify(codeObj);
-  //   const codeObjStrEncoded = btoa(codeObjStr);
-  //   const url = `${window.location.origin}/share/${codeObjStrEncoded}`;
-  //   navigator.clipboard.writeText(url);
-  //   showSuccessToast(`Code Shared Successfully!`);
-  // };
-
   return (
     <>
       <ToastContainer
@@ -240,34 +223,39 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-      <div class="text-center py-4 lg:px-4">
+      <div className="flex justify-center items-center mx-4 my-4">
         <div
-          class="p-2  border-2 border-black bg-[#e2e4ff] items-center text-black leading-none rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200 flex-shrink-0 lg:inline-flex"
+          className="border-2 border-black bg-[#e2e4ff]  text-black leading-none rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-6 py-2 hover:shadow transition duration-200 md:flex flex-row"
           role="alert"
         >
-          <span class="font-semibold mr-2 text-left flex-auto">
-            Your Feedback matters! Please fill this form to help us improve
-          </span>
-          <a
-            href="https://forms.gle/kwMGsyT6jwujcqiZA"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            <svg
-              class="fill-current opacity-75 h-4 w-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="font-semibold pr-2 flex-auto">
+              Your Feedback matters! Please fill this form to help us improve
+            </span>
+            <a
+              href="https://forms.gle/kwMGsyT6jwujcqiZA"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="flex-none rounded-md bg-gray-800 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
             >
-              <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
-            </svg>
-          </a>
+              <svg
+                className="fill-current opacity-75 h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
       <div className="md:flex flex-row">
         <div className="px-4 py-2">
+          <span className="text-lg font-semibold">Code Editor</span>
           <LanguagesDropdown onSelectChange={onSelectChange} />
         </div>
         <div className="px-4 py-2">
+          <span className="text-lg font-semibold">Theme</span>
           <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
         </div>
         {/* <div className="md:flex flex-row">
@@ -278,41 +266,10 @@ const Landing = () => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-save"
+                className="bi bi-save"
                 viewBox="0 0 16 16"
               >
                 <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z" />{" "}
-              </svg>
-            </button>
-          </div>
-          <div className="px-4 py-2">
-            <button onClick={handleLoadCode} title="Load Code">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-arrow-clockwise"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"
-                />
-                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />{" "}
-              </svg>
-            </button>
-          </div>
-          <div className="px-4 py-2">
-            <button onClick={handleShareCode} title="Share Code">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-share"
-                viewBox="0 0 16 16"
-              ><path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />{" "}
               </svg>
             </button>
           </div>

@@ -7,8 +7,9 @@ import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Codes from "./pages/Codes";
 import Signup from "./pages/Signup";
-import { Profile } from "./pages/Profile";
-
+import Profile from "./pages/Profile";
+import Content from "./pages/Content";
+import Error from "./pages/Error";
 export default function App() {
   return (
     <>
@@ -22,6 +23,8 @@ export default function App() {
         <Route path="/codes" element={<Codes />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<Error/>} />
+        <Route path="/content" element={<Content/>} />
       </Routes>
       <Footer />
     </>

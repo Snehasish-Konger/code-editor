@@ -8,6 +8,11 @@ export default function Header() {
   const [navbar, setNavbar] = useState(false);
   const { user, loggedIn } = useContext(AuthContext);
 
+  // Don't display header in 404 page
+  if (window.location.pathname === "*") {
+    return null;
+  }
+
   return (
     <nav className="w-full border-b border-black mb-2">
       <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
@@ -23,7 +28,7 @@ export default function Header() {
                 aria-hidden="false"
               >
                 <path
-                  class="a"
+                  className="a"
                   d="M6.021,0V-18.6H2.268V0Zm4.536-18.6V0h7.29a8.278,8.278,0,0,0,5.81-2.211A9.455,9.455,0,0,0,26.3-9.261c0-5.292-3.1-9.342-8.451-9.342ZM14.31-3.321V-15.282h3.537c3.1,0,4.7,2.835,4.7,6.021s-1.593,5.94-4.7,5.94ZM33.534-7.479h6.939v-3.375H33.534v-4.428h7.911V-18.6H29.781V0H41.688V-3.321H33.534Z"
                   transform="translate(-2.268 18.603)"
                 ></path>
@@ -78,7 +83,7 @@ export default function Header() {
                 <Link to="/">Home</Link>
               </li>
               <li className="text-gray-600 hover:text-blue-600">
-                <Link to="https://scientyficworld.org/blog/">Blog</Link>
+                <Link to="https://scientyficworld.org/blog">Blog</Link>
               </li>
               <li className="text-gray-600 hover:text-blue-600">
                 <Link to="https://scientyficworld.org/snehasish-konger/">
