@@ -50,7 +50,7 @@ const SocialLogin = () => {
             loading={state.google}
             className="w-full text-sm px-5 py-2.5 text-center"
             size="large"
-            onClick={() => handleSocialAuth('google')}
+            onClick={() => handleSocialAuth()}
           >
       <img
         src ={google}
