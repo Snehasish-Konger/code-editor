@@ -1,9 +1,36 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Editor from "@monaco-editor/react";
+import { AuthContext } from "../context/AuthProvider";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
   const [value, setValue] = useState(code || "");
   const [fileName, setFileName] = useState("Untitled");
+  const { user, loggedIn, storage } = useContext(AuthContext);
+
+  const handleSaveCode = (e) => {
+    e.preventDefault();
+    if (loggedIn) {
+      // The code will be saved in the firebase storage with it's name and extension.
+      const storageRef = ref(storage, `codes/${user.uid}/${fileName}.${extension}`);
+      uploadBytes(storageRef,[value], { contentType: "text/plain" })
+        .then((snapshot) => {
+          console.log("Uploaded a blob or file!");
+          getDownloadURL(snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            showSuccessToast("Code Saved Successfully!");
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          showErrorToast("Something went wrong! Please try again.");
+        });
+    } else {
+      showErrorToast("Please login to save your code.");
+    }
+  };
 
   const handleEditorChange = (value) => {
     setValue(value);
@@ -23,7 +50,6 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
     const input = document.createElement("input");
     input.type = "file";
     input.file = `${fileName}.${extension}`;
-    // input.accept = `.${extension}`;
     input.onchange = (e) => {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -37,7 +63,58 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
     input.click();
   };
 
+  const showSuccessToast = (msg) => {
+    toast.success(msg || `Compiled Successfully!`, {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  const showErrorToast = (msg, timer) => {
+    toast.error(msg || `Something went wrong! Please try again.`, {
+      position: "top-right",
+      autoClose: timer ? timer : 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   return (
+    <>
+    <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <div className="md:flex flex-row">
+          <div className="px-4 py-2">
+            <button onClick={handleSaveCode} title="Save Code">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-save"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z" />{" "}
+              </svg>
+            </button>
+          </div>
+        </div>
     <div className="overlay rounded-md overflow-hidden w-full h-full shadow-4xl border-2 border-gray-900">
       <div className="flex justify-between items-center bg-[#f6f8fa] text-gray-800 p-2 border-b-2 border-gray-900">
         <div className="flex items-center">
@@ -90,6 +167,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
             </svg>
           </button>
         </div>
+        
         <div className="flex items-center">
           <button
             className="text-gray-800 p-2 rounded-lg"
@@ -144,6 +222,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
         onChange={handleEditorChange}
       />
     </div>
+    </>
   );
 };
 export default CodeEditorWindow;
