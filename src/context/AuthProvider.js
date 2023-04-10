@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import {initializeApp} from 'firebase/app';
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import {getFirestore, collection, getDocs, where, query, addDoc, updateDoc} from 'firebase/firestore';
+import {doc} from 'firebase/firestore';
+import {getStorage} from 'firebase/storage';
+
+
 
 
 export const AuthContext = React.createContext();
@@ -20,6 +24,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const AuthProvider = (props) => {
   let navigate = useNavigate();
@@ -38,6 +43,7 @@ const AuthProvider = (props) => {
         email: user.email,
         photoURL: user.photoURL,
         authProvider: "email",
+        bio: "",
       });
       setUser(user);
       setLoggedIn(true);
@@ -53,9 +59,6 @@ const AuthProvider = (props) => {
   }
   };
 
-
-
-
   const signIn = async(data) => {
     try {
       const res = await signInWithEmailAndPassword(auth, data.email, data.password);
@@ -69,6 +72,7 @@ const AuthProvider = (props) => {
       console.log(errorCode, errorMessage);
     }
   };
+
 
   const logOut = () => {
     signOut(auth).then(() => {
@@ -95,14 +99,18 @@ const AuthProvider = (props) => {
   }, []);
 
   const updateUser = async (user) => {
-    return await updateDoc(collection(db, "users"), {
-      name: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-      describeYourself: user.describeYourself,
-      authProvider: "email",
-    });
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, {
+        photoURL: user.photoURL,
+        bio: user.bio,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -112,6 +120,8 @@ const AuthProvider = (props) => {
         signUp,
         user,
         updateUser,
+        db,
+        storage,
       }}
     >
       <>{props.children}</>

@@ -24,6 +24,7 @@ const SocialLogin = () => {
         username: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
+        bio: user.bio,
         authProvider: 'google',
       });
       console.log(user);

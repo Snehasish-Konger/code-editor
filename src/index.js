@@ -5,10 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import AuthProvider from "./context/AuthProvider";
+import  createBrowserHistory  from "./utils/history";
 
 ReactDOM.render(
   <React.Fragment>
-    <Router>
+    <Router history={createBrowserHistory}>
       <AuthProvider>
         <App />
       </AuthProvider>
