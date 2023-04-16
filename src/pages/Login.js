@@ -16,7 +16,6 @@ export default function Login() {
   if (loggedIn) {
     return <Navigate to="/profile" replace={true} />;
   }
-    
 
   return (
     <>
@@ -112,8 +111,9 @@ export default function Login() {
                 <div className="md:flex flex-col items-center justify-center">
                   <div className="items-center">
                     <div className="ml-4 text-xs text-gray-500 uppercase dark:text-gray-400">
-                      or sign in with <SocialLogin />
+                      or sign in with
                     </div>
+                    <SocialLogin />
                   </div>
                 </div>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">

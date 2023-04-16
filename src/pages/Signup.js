@@ -8,23 +8,28 @@ export default function Signup() {
   const { signUp, loggedIn } = useContext(AuthContext);
   const handleSubmit = (e) => {
     e.preventDefault();
-    const password = document.getElementById("password");
-    const confirmPassword = document.getElementById("confirmPassword");
-    if (password.value !== confirmPassword.value) {
-      confirmPassword.setCustomValidity("Passwords Don't Match");
-    } else {
       const data = {
-        name: e.target.name.value,
+        username: e.target.name.value,
         email: e.target.email.value,
         password: e.target.password.value,
       };
       signUp(data);
       console.log(data);
-    }
   };
   if (loggedIn) {
     return <Navigate to="/profile" replace={true} />;
   }
+
+  const handleConfirmPassword = () => {
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    if (password.value !== confirmPassword.value) {
+      confirmPassword.setCustomValidity("Confirm password should match with password");
+    } else {
+      confirmPassword.setCustomValidity("");
+    handleSubmit();
+    }
+  };
 
   return (
     <>
@@ -98,10 +103,9 @@ export default function Signup() {
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required=""
-                    // pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
                   />
                 </div>
-                Confirm password should match with password
+                
                 <div>
                   <label
                     for="confirmPassword"
@@ -116,6 +120,7 @@ export default function Signup() {
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required=""
+                    onChange={handleConfirmPassword}
                   />
                 </div>
                 <div className="flex items-center justify-between">

@@ -41,6 +41,7 @@ int main() {
 
 const Landing = () => {
   const [code, setCode] = useState(Default);
+  const [filename, setFilename] = useState("Untitled.c");
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
@@ -48,29 +49,11 @@ const Landing = () => {
   const [language, setLanguage] = useState(lang[4]);
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
-  // const { app, loggedIn } = React.useContext(AuthContext);
-
-  // const handleSaveCode = async () => {
-  //   if (!loggedIn) {
-  //     toast.error("Please login to save the code");
-  //     return;
-  //   } else if (code === Default) {
-  //     const db = getFirestore(app);
-  //     const userRef = await addDoc(collection(db, "users"), {
-  //       code: code,
-  //       language: language,
-  //       theme: theme,
-  //       customInput: customInput,
-  //     });
-  //     console.log("Document written with ID: ", userRef.id);
-  //     toast.success("Code saved successfully");
-  //   }
-  // };
-
   const onSelectChange = (sl) => {
-    console.log("selected Option...", sl);
+    // console.log("selected Option...", sl);
     setLanguage(sl);
   };
+  
   useEffect(() => {
     if (enterPress && ctrlPress) {
       console.log("enterPress", enterPress);
@@ -80,9 +63,14 @@ const Landing = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctrlPress, enterPress]);
   const onChange = (action, data) => {
+    // console.log("action", action);
     switch (action) {
       case "code": {
         setCode(data);
+        break;
+      }
+      case "filename": {
+        setFilename(data);
         break;
       }
       default: {
@@ -93,6 +81,7 @@ const Landing = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
+      source_file: filename,
       language_id: language.id,
       // encode source code in base64
       source_code: btoa(code),
@@ -258,22 +247,6 @@ const Landing = () => {
           <span className="text-lg font-semibold">Theme</span>
           <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
         </div>
-        {/* <div className="md:flex flex-row">
-          <div className="px-4 py-2">
-            <button onClick={handleSaveCode} title="Save Code">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-save"
-                viewBox="0 0 16 16"
-              >
-                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z" />{" "}
-              </svg>
-            </button>
-          </div>
-        </div> */}
       </div>
       <div className="md:flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end">
@@ -311,3 +284,4 @@ const Landing = () => {
   );
 };
 export default Landing;
+

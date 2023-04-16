@@ -1,13 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {initializeApp} from 'firebase/app';
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import {getFirestore, collection, getDocs, where, query, addDoc, updateDoc} from 'firebase/firestore';
-import {doc} from 'firebase/firestore';
-import {getStorage} from 'firebase/storage';
-
-
-
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile,
+  sendEmailVerification,
+} from "firebase/auth";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  where,
+  query,
+  setDoc,
+  doc,
+} from "firebase/firestore";
+// import {doc} from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
 
 export const AuthContext = React.createContext();
 
@@ -18,9 +31,8 @@ const firebaseConfig = {
   storageBucket: "scientyfic-world.appspot.com",
   messagingSenderId: "72600806578",
   appId: "1:72600806578:web:931d0ecffd22a1899e15ab",
-  measurementId: "G-Y1N0SW1BYE"
+  measurementId: "G-Y1N0SW1BYE",
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -31,41 +43,43 @@ const AuthProvider = (props) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({});
 
-  const signUp = async(data) => {
+  const signUp = async (data) => {
     try {
-      const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
       const user = res.user;
-      const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+      await sendEmailVerification(user)
+        .then(() => {
+          console.log("Email sent");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      const q = query(collection(db, "users"), where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {
-        await addDoc(collection(db, 'users'), {
-        username: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        authProvider: "email",
-        bio: "",
-      });
-      setUser(user);
-      setLoggedIn(true);
-      navigate('/');
-    } else {
-      console.log('User already exists');
-      signIn(user.email, user.uid);
-    }
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode, errorMessage);
-  }
-  };
-
-  const signIn = async(data) => {
-    try {
-      const res = await signInWithEmailAndPassword(auth, data.email, data.password);
-      const user = res.user;
-      setUser(user);
-      setLoggedIn(true);
-      navigate('/');
+        // Create a new document in collection users with ID user.uid
+        const docRef = doc(db, "users", user.uid);
+        await setDoc(docRef, {
+          username: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          bio: "",
+          city: "",
+          country: "",
+          authProvider: "email",
+          emailVerified: user.emailVerified,
+        });
+        setUser(user);
+        setLoggedIn(true);
+        navigate("/");
+      } else {
+        console.log("User already exists");
+        signIn(user.email, user.uid);
+      }
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -73,17 +87,36 @@ const AuthProvider = (props) => {
     }
   };
 
+  const signIn = async (data) => {
+    try {
+      const res = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      const user = res.user;
+      setUser(user);
+      setLoggedIn(true);
+      navigate("/");
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    }
+  };
 
   const logOut = () => {
-    signOut(auth).then(() => {
-      // Sign-out successful.
-      setLoggedIn(false);
-      setUser({});
-      navigate('/');
-    }).catch((error) => {
-      // An error happened.
-      console.log(error);
-    });
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setLoggedIn(false);
+        setUser({});
+        navigate("/");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -98,19 +131,6 @@ const AuthProvider = (props) => {
     });
   }, []);
 
-  const updateUser = async (user) => {
-    try {
-      const userRef = doc(db, 'users', user.uid);
-      await updateDoc(userRef, {
-        photoURL: user.photoURL,
-        bio: user.bio,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
   return (
     <AuthContext.Provider
       value={{
@@ -119,7 +139,7 @@ const AuthProvider = (props) => {
         signIn,
         signUp,
         user,
-        updateUser,
+        updateProfile,
         db,
         storage,
       }}

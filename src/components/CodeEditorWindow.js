@@ -10,13 +10,27 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
   const [fileName, setFileName] = useState("Untitled");
   const { user, loggedIn, storage } = useContext(AuthContext);
 
-  const handleSaveCode = (e) => {
+  
+  const handleEditorChange = (value) => {
+    setValue(value);
+    onChange("code", value);
+  };
+  
+  const handleFileNameChange = (e) => {
+    const newFileName = e.target.value;
+    setFileName(newFileName);
+    const file = `${newFileName}.${extension}`;
+    onChange("filename", file)
+  };
+  
+  const handleSaveCode = async(e) => {
     e.preventDefault();
     if (loggedIn) {
       // The code will be saved in the firebase storage with it's name and extension.
       const storageRef = ref(storage, `codes/${user.uid}/${fileName}.${extension}`);
-      uploadBytes(storageRef,[value], { contentType: "text/plain" })
-        .then((snapshot) => {
+      const file = new Blob([value], { type: "application/octet-stream" });
+      await uploadBytes(storageRef, file)
+      .then((snapshot) => {
           console.log("Uploaded a blob or file!");
           getDownloadURL(snapshot.ref).then((downloadURL) => {
             console.log("File available at", downloadURL);
@@ -31,12 +45,6 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
       showErrorToast("Please login to save your code.");
     }
   };
-
-  const handleEditorChange = (value) => {
-    setValue(value);
-    onChange("code", value);
-  };
-
   const handleDownload = () => {
     const element = document.createElement("a");
     const file = new Blob([value], { type: "text/plain" });
@@ -61,6 +69,11 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
       reader.readAsText(file);
     };
     input.click();
+  };
+
+  const handleCopy = async() => {
+    await navigator.clipboard.writeText(value);
+    showSuccessToast("Code Copied Successfully!");
   };
 
   const showSuccessToast = (msg) => {
@@ -137,7 +150,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
               size={fileName.length || 1}
               type="text"
               value={fileName}
-              onChange={(e) => setFileName(e.target.value)}
+              onChange={handleFileNameChange}
             />
             <span className="pl-0">.{extension}</span>
           </span>
@@ -169,6 +182,26 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
         </div>
         
         <div className="flex items-center">
+          <button
+            className="text-gray-800 p-2 rounded-lg"
+            onClick={handleCopy}
+            title="Copy"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1"
+                d="M9 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm4 0h4a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
+              />
+            </svg>
+          </button>
           <button
             className="text-gray-800 p-2 rounded-lg"
             onClick={handleDownload}
@@ -215,6 +248,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
       <Editor
         height="85vh"
         width={`100%`}
+        file={`${fileName}.${extension}`}
         language={language || "javascript"}
         value={value}
         theme={theme}
@@ -225,4 +259,4 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
     </>
   );
 };
-export default CodeEditorWindow;
+export default CodeEditorWindow
