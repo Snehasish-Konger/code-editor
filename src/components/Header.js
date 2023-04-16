@@ -86,7 +86,7 @@ export default function Header() {
                 <Link to="https://scientyficworld.org/blog">Blog</Link>
               </li>
               <li className="text-gray-600 hover:text-blue-600">
-                <Link to="https://scientyficworld.org/snehasish-konger/">
+                <Link to="/about">
                   About
                 </Link>
               </li>

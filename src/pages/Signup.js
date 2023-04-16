@@ -152,7 +152,7 @@ export default function Signup() {
                 </button>
                 <div className="md:flex flex-col items-center justify-center">
                   <div className="items-center">
-                    <div className="ml-4 text-xs text-gray-500 uppercase dark:text-gray-400">
+                    <div className="ml-4 text-xs text-gray-500 text-center uppercase dark:text-gray-400">
                       or sign up with <SocialLogin />
                     </div>
                   </div>

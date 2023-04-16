@@ -68,20 +68,20 @@ const Footer = () => {
           Useful links
         </h6>
         <p className="mb-4">
-          <Link to="https://scientyficworld.org/" className="text-gray-600">← Back to Home</Link>
+          <Link to="https://scientyficworld.org/" className="text-gray-600">← Scientyfic World</Link>
         </p>
         <p className="mb-4">
           <Link to="https://scientyficworld.org/blog/" className="text-gray-600">Blog</Link>
         </p>
         <p className="mb-4">
-          <Link to="https://scientyficworld.org/snehasish-konger/" className="text-gray-600">About</Link>
+          <Link to="/about" className="text-gray-600">About</Link>
         </p>
         <p className="mb-4">
           <Link to="https://scientyficworld.org/contact-us/" className="text-gray-600">Contact Us</Link>
         </p>
-        <p className="mb-4">
+        {/* <p className="mb-4">
           <Link to="/reviews" className="text-gray-600">Reviews</Link>
-        </p>
+        </p> */}
       </div>
       <div className="">
         <h6 className="uppercase font-semibold mb-4 flex justify-center md:justify-start">

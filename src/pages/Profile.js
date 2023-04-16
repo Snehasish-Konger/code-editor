@@ -37,7 +37,7 @@ const Profile = () => {
       }
     };
     fetchUserData();
-  }, []);
+  }, [db, user.uid]);
 
   const handleLogout = () => {
     logOut();
