@@ -122,7 +122,7 @@ const Profile = () => {
       {loggedIn ? (
         <div className="md:flex flex-col flex-wrap w-full max-w-2xl mx-auto my-10">
           <div className="flex justify-center items-center mx-4 mb-10">
-            <div
+            {/* <div
               className="border-2 border-black bg-[#ffe8e2]  text-black leading-none rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-6 py-2 hover:shadow transition duration-200 md:flex flex-row"
               role="alert"
             >
@@ -132,7 +132,7 @@ const Profile = () => {
                   your profile. We'll update you soon.
                 </span>
               </div>
-            </div>
+            </div> */}
           </div>
           <form>
             <div className="space-y-12">

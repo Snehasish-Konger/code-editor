@@ -41,7 +41,7 @@ int main() {
 
 const Landing = () => {
   const [code, setCode] = useState(Default);
-  const [filename, setFilename] = useState("Untitled.c");
+  const [filename, setFilename] = useState("Main.c");
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
@@ -49,11 +49,14 @@ const Landing = () => {
   const [language, setLanguage] = useState(lang[4]);
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
+
+  // Function starts here ---------------------------------------------------------------------------------------------------
+
   const onSelectChange = (sl) => {
     // console.log("selected Option...", sl);
     setLanguage(sl);
   };
-  
+
   useEffect(() => {
     if (enterPress && ctrlPress) {
       console.log("enterPress", enterPress);
@@ -62,8 +65,9 @@ const Landing = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctrlPress, enterPress]);
+
   const onChange = (action, data) => {
-    // console.log("action", action);
+    console.log("action", action);
     switch (action) {
       case "code": {
         setCode(data);
@@ -81,7 +85,7 @@ const Landing = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      source_file: filename,
+      source_file: btoa(filename),
       language_id: language.id,
       // encode source code in base64
       source_code: btoa(code),
@@ -171,10 +175,14 @@ const Landing = () => {
     }
   }
   useEffect(() => {
-    defineTheme("active4d").then((_) =>
-      setTheme({ value: "active4d", label: "Active4D" })
+    defineTheme("github-dark").then((_) =>
+      setTheme({ value: "github-dark", label: "GitHub Dark" })
     );
   }, []);
+
+  // Functions ends here -------------------------------------------------------------------------------------------------------
+
+  // Toasts -------------------------------------------------------------------------------------------------------
 
   const showSuccessToast = (msg) => {
     toast.success(msg || `Compiled Successfully!`, {
@@ -198,6 +206,8 @@ const Landing = () => {
       progress: undefined,
     });
   };
+
+  // Toasts -------------------------------------------------------------------------------------------------------
 
   return (
     <>
@@ -284,4 +294,3 @@ const Landing = () => {
   );
 };
 export default Landing;
-

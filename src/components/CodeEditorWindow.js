@@ -7,10 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
   const [value, setValue] = useState(code || "");
-  const [fileName, setFileName] = useState("Untitled");
+  const [fileName, setFileName] = useState("Main");
   const { user, loggedIn, storage } = useContext(AuthContext);
 
-  
+  // All the functions for the buttons in the code editor window------------------------------------------------------
+
   const handleEditorChange = (value) => {
     setValue(value);
     onChange("code", value);
@@ -76,6 +77,12 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
     showSuccessToast("Code Copied Successfully!");
   };
 
+  // -----------------------------------------------------------------------------------------------------------------
+
+
+
+  // Success and Error Toasts----------------------------------------------------------------------------------------
+
   const showSuccessToast = (msg) => {
     toast.success(msg || `Compiled Successfully!`, {
       position: "top-right",
@@ -98,6 +105,8 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
       progress: undefined,
     });
   };
+
+  // -----------------------------------------------------------------------------------------------------------------
 
   return (
     <>

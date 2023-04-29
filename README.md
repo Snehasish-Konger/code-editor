@@ -1,4 +1,20 @@
-# Documentation for Online Compiler
+# Documentation for Online IDE
+
+## About
+
+This is a documentation for the Online IDE project. The project is an online code editor that allows users to write and execute code in a variety of programming languages. It features a Monaco Editor, which is the same code editor that powers Visual Studio Code. The Monaco Editor provides syntax highlighting and autocomplete for over 40 programming languages, making it a powerful tool for developers.
+
+The Online IDE is avaialable at [https://ide.scientyficworld.org/](https://ide.scientyficworld.org/).
+
+It is not an open source project and we don't recommend to use it for commercial purposes.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Features](#features)
+- [Conclusion](#conclusion)
 
 ## Introduction
 
@@ -15,6 +31,7 @@ The project uses the following technologies:
 - Judge0: Judge0 is an API that allows users to compile and execute code in a variety of programming languages. It is used to compile and execute code in the project.
 - RapidAPI: RapidAPI is a platform that allows developers to find, test, and connect to APIs. It is used to quickly deploy the Judge0 API in the project.
 - Monaco Editor: The Monaco Editor is a code editor that powers Visual Studio Code. It is used as the code editor in the project.
+- Firebase: Firebase is a platform that provides a variety of services for building web and mobile applications. It is used to host the project. In this project, Firebase is used to host the project, store user data, and authenticate users.
 
 ## Project Structure
 
@@ -77,6 +94,14 @@ The code editor has the following features:
 3. Customizable Themes: The user can choose from a list of available themes to personalize the appearance of the code editor.
 
 4. Execution Information: The user can view information about the execution of their compiled code, such as the time taken and the memory used. This provides insight into the performance of the code.
+
+5. User Authentication: The user can sign up and log in to the code editor using their email address and password. This allows them to save their code and access it from any device.
+
+6. User Data Storage: The user's code is stored in a database, allowing them to access it from any device. This also allows them to share their code with other users.
+
+7. User Data Privacy: The user's code is stored in a database, allowing them to access it from any device. This also allows them to share their code with other users.
+
+8. Code Sharing: The user can share their code with other users by sending them a link to the code editor. This allows them to collaborate on projects and share their code with others.
 
 ## Conclusion
 
