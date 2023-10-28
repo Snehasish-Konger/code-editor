@@ -10,6 +10,8 @@
 
 # production
 /build
+**/._*
+**._*
 
 # misc
 .env
