@@ -10,11 +10,17 @@ It is not an open source project and we don't recommend to use it for commercial
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Features](#features)
-- [Conclusion](#conclusion)
+- [Documentation for Online IDE](#documentation-for-online-ide)
+  - [About](#about)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Tech Stack](#tech-stack)
+  - [Project Structure](#project-structure)
+  - [Features](#features)
+  - [Conclusion](#conclusion)
+  - [Future Scope](#future-scope)
+  - [Author](#author)
+  - [License](#license)
 
 ## Introduction
 
@@ -133,4 +139,10 @@ Overall, the tech stack and project structure work together to provide a seamles
 
 11. Add multiple files - Allow users to add multiple files to their project, making it easier to organize their code.
 
+## Author
 
+- [Snehasish Konger](https://github.com/Snehasish-Konger)
+
+## License
+
+This project is licensed under the [GNU GENERAL PUBLIC LICENSE](LICENSE).
