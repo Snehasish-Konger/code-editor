@@ -48,10 +48,6 @@ const Landing = () => {
   const [theme, setTheme] = useState("github");
   const [language, setLanguage] = useState(lang[4]);
   const idRef = useRef(1);
-  const [editors, setEditors] = useState([
-    { id: idRef.current, code: Default, filename: "Main.c" },
-  ]);
-  const [activeEditorId, setActiveEditorId] = useState(idRef.current);
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
@@ -65,42 +61,14 @@ const Landing = () => {
   const addEditor = () => {
     idRef.current += 1;
     const newFile = `File${idRef.current}.${language.extension}`;
-    setEditors((eds) => [
-      ...eds,
-      { id: idRef.current, code: "", filename: newFile },
-    ]);
-    setActiveEditorId(idRef.current);
     setCode("");
     setFilename(newFile);
-  };
-
-  const removeEditor = (id) => {
-    setEditors((eds) => {
-      if (eds.length === 1) return eds;
-      const filtered = eds.filter((e) => e.id !== id);
-      if (id === activeEditorId) {
-        const next = filtered[0];
-        setActiveEditorId(next.id);
-        setCode(next.code);
-        setFilename(next.filename);
-      }
-      return filtered;
-    });
   };
 
   const setLanguageByExtension = (ext) => {
     const found = lang.find((l) => l.extension === ext);
     if (found) {
       setLanguage(found);
-    }
-  };
-
-  const setActiveEditor = (id) => {
-    const ed = editors.find((e) => e.id === id);
-    if (ed) {
-      setActiveEditorId(id);
-      setCode(ed.code);
-      setFilename(ed.filename);
     }
   };
 
@@ -114,15 +82,6 @@ const Landing = () => {
   }, [ctrlPress, enterPress]);
 
   const onChange = (action, data) => {
-    setEditors((eds) =>
-      eds.map((ed) => {
-        if (ed.id !== activeEditorId) return ed;
-        if (action === "code") return { ...ed, code: data };
-        if (action === "filename") return { ...ed, filename: data };
-        return ed;
-      })
-    );
-
     if (action === "code") {
       setCode(data);
     } else if (action === "filename") {
@@ -309,43 +268,6 @@ const Landing = () => {
       </div>
       <div className="md:flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end">
-          <div className="flex w-full border-b-2 border-gray-900">
-            {editors.map((ed) => (
-              <div key={ed.id} className="flex border-r-2 border-gray-900">
-                <button
-                  onClick={() => setActiveEditor(ed.id)}
-                  className={`px-4 py-2 ${
-                    ed.id === activeEditorId ? "bg-[#f6f8fa]" : "bg-gray-200"
-                  }`}
-                >
-                  {ed.filename}
-                </button>
-                <button
-                  onClick={() => removeEditor(ed.id)}
-                  className="px-2 text-red-600 hover:bg-gray-300"
-                  title="Close"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-            <button className="px-2" onClick={addEditor} title="New File">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </button>
-          </div>
           <CodeEditorWindow
             code={code}
             filename={filename}
