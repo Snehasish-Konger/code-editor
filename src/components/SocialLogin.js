@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { app } from "../firebase";
 import {
   getAuth,
   signInWithPopup,
@@ -18,7 +19,7 @@ import {
   doc,
 } from "firebase/firestore";
 const SocialLogin = () => {
-  const { app, signUp, signIn, loggedIn } = useContext(AuthContext);
+  const { signUp, signIn, loggedIn } = useContext(AuthContext);
   const [state, setState] = useState({
     google: false,
   });
