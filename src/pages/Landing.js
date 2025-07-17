@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import CodeEditorWindow from "../components/CodeEditorWindow";
 import axios from "axios";
 import { classnames } from "../utils/general";
@@ -14,7 +14,10 @@ import CustomInput from "../components/CustomInput";
 import OutputDetails from "../components/OutputDetails";
 import ThemeDropdown from "../components/ThemeDropdown";
 import LanguagesDropdown from "../components/LanguagesDropdown";
-// import { AuthContext } from "../context/AuthProvider";
+import TabNavigation from "../components/TabNavigation";
+import Toolbox from "../components/Toolbox";
+import { AuthContext } from "../context/AuthProvider";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFirestore, addDoc, collection } from "firebase/firestore";
 
 const Default = `/**************************************************
@@ -40,13 +43,25 @@ int main() {
 `;
 
 const Landing = () => {
+  const { user, loggedIn, storage } = useContext(AuthContext);
+
+  const initialLang = lang[4];
+  const initialTab = {
+    id: 1,
+    code: Default,
+    filename: "Main.c",
+    language: initialLang,
+  };
+
+  const [tabs, setTabs] = useState([initialTab]);
+  const [activeTab, setActiveTab] = useState(1);
   const [code, setCode] = useState(Default);
   const [filename, setFilename] = useState("Main.c");
+  const [language, setLanguage] = useState(initialLang);
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("github");
-  const [language, setLanguage] = useState(lang[4]);
   const idRef = useRef(1);
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
@@ -60,9 +75,103 @@ const Landing = () => {
 
   const addEditor = () => {
     idRef.current += 1;
-    const newFile = `File${idRef.current}.${language.extension}`;
+    const newId = idRef.current;
+    const newFile = `File${newId}.${language.extension}`;
+    const newTab = { id: newId, code: "", filename: newFile, language };
+    setTabs([...tabs, newTab]);
+    setActiveTab(newId);
     setCode("");
     setFilename(newFile);
+  };
+
+  const switchTab = (id) => {
+    const tab = tabs.find((t) => t.id === id);
+    if (tab) {
+      setActiveTab(id);
+      setCode(tab.code);
+      setFilename(tab.filename);
+      setLanguage(tab.language);
+    }
+  };
+
+  const closeTab = (id) => {
+    let updated = tabs.filter((t) => t.id !== id);
+    if (updated.length === 0) {
+      idRef.current += 1;
+      const fallback = {
+        id: idRef.current,
+        code: "",
+        filename: `File${idRef.current}.${language.extension}`,
+        language,
+      };
+      updated = [fallback];
+    }
+    setTabs(updated);
+    if (activeTab === id) {
+      const next = updated[updated.length - 1];
+      setActiveTab(next.id);
+      setCode(next.code);
+      setFilename(next.filename);
+      setLanguage(next.language);
+    }
+  };
+
+  const handleSaveCode = async () => {
+    if (loggedIn) {
+      const storageRef = ref(storage, `codes/${user.uid}/${filename}`);
+      const file = new Blob([code], { type: "application/octet-stream" });
+      await uploadBytes(storageRef, file)
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref).then(() => {
+            showSuccessToast("Code Saved Successfully!");
+          });
+        })
+        .catch(() => {
+          showErrorToast("Something went wrong! Please try again.");
+        });
+    } else {
+      showErrorToast("Please login to save your code.");
+    }
+  };
+
+  const handleDownload = () => {
+    const element = document.createElement("a");
+    const file = new Blob([code], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = filename;
+    document.body.appendChild(element);
+    element.click();
+  };
+
+  const handleUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const text = ev.target.result;
+        setCode(text);
+        setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, code: text } : t)));
+      };
+      reader.readAsText(file);
+      if (file) {
+        const full = file.name;
+        setFilename(full);
+        setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, filename: full } : t)));
+        const idx = full.lastIndexOf(".");
+        if (idx !== -1) {
+          const ext = full.substring(idx + 1);
+          setLanguageByExtension(ext);
+        }
+      }
+    };
+    input.click();
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(code);
+    showSuccessToast("Code Copied Successfully!");
   };
 
   const setLanguageByExtension = (ext) => {
@@ -84,8 +193,10 @@ const Landing = () => {
   const onChange = (action, data) => {
     if (action === "code") {
       setCode(data);
+      setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, code: data } : t)));
     } else if (action === "filename") {
       setFilename(data);
+      setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, filename: data } : t)));
     } else {
       console.warn("case not handled!", action, data);
     }
@@ -265,7 +376,19 @@ const Landing = () => {
           <span className="text-lg font-semibold">Theme</span>
           <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
         </div>
+        <Toolbox
+          onCopy={handleCopy}
+          onDownload={handleDownload}
+          onUpload={handleUpload}
+          onSave={handleSaveCode}
+        />
       </div>
+      <TabNavigation
+        tabs={tabs}
+        activeTabId={activeTab}
+        onSelect={switchTab}
+        onClose={closeTab}
+      />
       <div className="md:flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end">
           <CodeEditorWindow
