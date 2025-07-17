@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { app } from "../firebase";
+import { initializeApp } from "firebase/app";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -24,6 +24,17 @@ import { getStorage } from "firebase/storage";
 
 export const AuthContext = React.createContext();
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAiF1v5lF8Ae91mXT4IVcnbuBegh25AUTs",
+  authDomain: "scientyfic-world.firebaseapp.com",
+  databaseURL: "https://scientyfic-world-default-rtdb.firebaseio.com",
+  projectId: "scientyfic-world",
+  storageBucket: "scientyfic-world.appspot.com",
+  messagingSenderId: "72600806578",
+  appId: "1:72600806578:web:931d0ecffd22a1899e15ab",
+  measurementId: "G-Y1N0SW1BYE",
+};
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
@@ -132,7 +143,6 @@ const AuthProvider = (props) => {
         updateProfile,
         db,
         storage,
-        app,
       }}
     >
       <>{props.children}</>
