@@ -11,7 +11,6 @@ import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Error from "./pages/Error";
 import Contact from "./pages/Contact";
-import IDE from "./pages/IDE";
 export default function App() {
   return (
     <>
@@ -23,7 +22,6 @@ export default function App() {
         {/* <Route path="/reviews" element={<Testimonials />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/codes" element={<Codes />} />
-        <Route path="/ide" element={<IDE />} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
