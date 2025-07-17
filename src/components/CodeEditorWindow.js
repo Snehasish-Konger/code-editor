@@ -1,14 +1,37 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import { AuthContext } from "../context/AuthProvider";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
+const CodeEditorWindow = ({
+  onChange,
+  onNewTab,
+  language,
+  extension,
+  code,
+  theme,
+  filename,
+}) => {
   const [value, setValue] = useState(code || "");
-  const [fileName, setFileName] = useState("Main");
+  const [fileName, setFileName] = useState(
+    filename ? filename.replace(new RegExp(`\\.${extension}$`), "") : "Main"
+  );
   const { user, loggedIn, storage } = useContext(AuthContext);
+
+  useEffect(() => {
+    setValue(code || "");
+  }, [code]);
+
+  useEffect(() => {
+    if (filename) {
+      const base = filename.endsWith(`.${extension}`)
+        ? filename.slice(0, -(extension.length + 1))
+        : filename;
+      setFileName(base);
+    }
+  }, [filename, extension]);
 
   // All the functions for the buttons in the code editor window------------------------------------------------------
 
@@ -166,11 +189,7 @@ const CodeEditorWindow = ({ onChange, language, extension, code, theme }) => {
           {/* create new file along with the existing file */}
           <button
             className="text-gray-800 p-2 rounded-lg"
-            onClick={() => {
-              setFileName("New");
-              setValue("");
-              onChange("code", "");
-            }}
+            onClick={onNewTab}
             title="New File"
           >
             <svg
