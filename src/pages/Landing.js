@@ -74,6 +74,27 @@ const Landing = () => {
     setFilename(newFile);
   };
 
+  const removeEditor = (id) => {
+    setEditors((eds) => {
+      if (eds.length === 1) return eds;
+      const filtered = eds.filter((e) => e.id !== id);
+      if (id === activeEditorId) {
+        const next = filtered[0];
+        setActiveEditorId(next.id);
+        setCode(next.code);
+        setFilename(next.filename);
+      }
+      return filtered;
+    });
+  };
+
+  const setLanguageByExtension = (ext) => {
+    const found = lang.find((l) => l.extension === ext);
+    if (found) {
+      setLanguage(found);
+    }
+  };
+
   const setActiveEditor = (id) => {
     const ed = editors.find((e) => e.id === id);
     if (ed) {
@@ -290,15 +311,23 @@ const Landing = () => {
         <div className="flex flex-col w-full h-full justify-start items-end">
           <div className="flex w-full border-b-2 border-gray-900">
             {editors.map((ed) => (
-              <button
-                key={ed.id}
-                onClick={() => setActiveEditor(ed.id)}
-                className={`px-4 py-2 border-r-2 border-gray-900 ${
-                  ed.id === activeEditorId ? "bg-[#f6f8fa]" : "bg-gray-200"
-                }`}
-              >
-                {ed.filename}
-              </button>
+              <div key={ed.id} className="flex border-r-2 border-gray-900">
+                <button
+                  onClick={() => setActiveEditor(ed.id)}
+                  className={`px-4 py-2 ${
+                    ed.id === activeEditorId ? "bg-[#f6f8fa]" : "bg-gray-200"
+                  }`}
+                >
+                  {ed.filename}
+                </button>
+                <button
+                  onClick={() => removeEditor(ed.id)}
+                  className="px-2 text-red-600 hover:bg-gray-300"
+                  title="Close"
+                >
+                  ×
+                </button>
+              </div>
             ))}
             <button className="px-2" onClick={addEditor} title="New File">
               <svg
@@ -322,6 +351,7 @@ const Landing = () => {
             filename={filename}
             onChange={onChange}
             onNewTab={addEditor}
+            onLanguageChange={setLanguageByExtension}
             language={language?.value}
             extension={language?.extension}
             theme={theme.value}
