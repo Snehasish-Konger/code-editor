@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import CodeEditorWindow from "../components/CodeEditorWindow";
 import axios from "axios";
 import { classnames } from "../utils/general";
@@ -14,8 +14,6 @@ import CustomInput from "../components/CustomInput";
 import OutputDetails from "../components/OutputDetails";
 import ThemeDropdown from "../components/ThemeDropdown";
 import LanguagesDropdown from "../components/LanguagesDropdown";
-// import { AuthContext } from "../context/AuthProvider";
-// import { getFirestore, addDoc, collection } from "firebase/firestore";
 
 const Default = `/**************************************************
 You can write code in any of the languages supported by the compiler.
@@ -36,8 +34,7 @@ int main() {
     printf("%d %d", a+b, a-b);
     printf(" %.1f %.1f", c+d, c-d);
     return 0;
-}
-`;
+}`;
 
 const Landing = () => {
   const [code, setCode] = useState(Default);
@@ -47,75 +44,46 @@ const Landing = () => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("github");
   const [language, setLanguage] = useState(lang[4]);
-  const idRef = useRef(1);
-  const [editors, setEditors] = useState([
-    { id: idRef.current, code: Default, filename: "Main.c" },
-  ]);
-  const [activeEditorId, setActiveEditorId] = useState(idRef.current);
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
-  // Function starts here ---------------------------------------------------------------------------------------------------
-
+  // ------------------------------------------------------------
   const onSelectChange = (sl) => {
-    // console.log("selected Option...", sl);
     setLanguage(sl);
   };
 
-  const addEditor = () => {
-    idRef.current += 1;
-    const newFile = `File${idRef.current}.${language.extension}`;
-    setEditors((eds) => [
-      ...eds,
-      { id: idRef.current, code: "", filename: newFile },
-    ]);
-    setActiveEditorId(idRef.current);
-    setCode("");
-    setFilename(newFile);
-  };
-
-  const setActiveEditor = (id) => {
-    const ed = editors.find((e) => e.id === id);
-    if (ed) {
-      setActiveEditorId(id);
-      setCode(ed.code);
-      setFilename(ed.filename);
+  const setLanguageByExtension = (ext) => {
+    const found = lang.find((l) => l.extension === ext);
+    if (found) {
+      setLanguage(found);
     }
   };
 
   useEffect(() => {
     if (enterPress && ctrlPress) {
-      console.log("enterPress", enterPress);
-      console.log("ctrlPress", ctrlPress);
       handleCompile();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctrlPress, enterPress]);
 
   const onChange = (action, data) => {
-    setEditors((eds) =>
-      eds.map((ed) => {
-        if (ed.id !== activeEditorId) return ed;
-        if (action === "code") return { ...ed, code: data };
-        if (action === "filename") return { ...ed, filename: data };
-        return ed;
-      })
-    );
-
-    if (action === "code") {
-      setCode(data);
-    } else if (action === "filename") {
-      setFilename(data);
-    } else {
-      console.warn("case not handled!", action, data);
+    switch (action) {
+      case "code":
+        setCode(data);
+        break;
+      case "filename":
+        setFilename(data);
+        break;
+      default:
+        console.warn("case not handled!", action, data);
     }
   };
+
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
       source_file: btoa(filename),
       language_id: language.id,
-      // encode source code in base64
       source_code: btoa(code),
       stdin: btoa(customInput),
     };
@@ -135,18 +103,13 @@ const Landing = () => {
     axios
       .request(options)
       .then(function (response) {
-        console.log("res.data", response.data);
         const token = response.data.token;
         checkStatus(token);
       })
       .catch((err) => {
         let error = err.response ? err.response.data : err;
-        // get error status
         let status = err.response.status;
-        console.log("status", status);
         if (status === 429) {
-          console.log("too many requests", status);
-
           showErrorToast(
             `Quota of 100 requests exceeded for the Day! Try again tomorrow.`,
             10000
@@ -170,10 +133,7 @@ const Landing = () => {
     try {
       let response = await axios.request(options);
       let statusId = response.data.status?.id;
-
-      // Processed - we have a result
       if (statusId === 1 || statusId === 2) {
-        // still processing
         setTimeout(() => {
           checkStatus(token);
         }, 2000);
@@ -182,7 +142,6 @@ const Landing = () => {
         setProcessing(false);
         setOutputDetails(response.data);
         showSuccessToast(`Compiled Successfully!`);
-        console.log("response.data", response.data);
         return;
       }
     } catch (err) {
@@ -194,8 +153,6 @@ const Landing = () => {
 
   function handleThemeChange(th) {
     const theme = th;
-    console.log("theme...", theme);
-
     if (["light", "vs-dark"].includes(theme.value)) {
       setTheme(theme);
     } else {
@@ -208,10 +165,7 @@ const Landing = () => {
     );
   }, []);
 
-  // Functions ends here -------------------------------------------------------------------------------------------------------
-
-  // Toasts -------------------------------------------------------------------------------------------------------
-
+  // Toasts -------------------------------------------------------
   const showSuccessToast = (msg) => {
     toast.success(msg || `Compiled Successfully!`, {
       position: "top-right",
@@ -234,8 +188,6 @@ const Landing = () => {
       progress: undefined,
     });
   };
-
-  // Toasts -------------------------------------------------------------------------------------------------------
 
   return (
     <>
@@ -288,40 +240,10 @@ const Landing = () => {
       </div>
       <div className="md:flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end">
-          <div className="flex w-full border-b-2 border-gray-900">
-            {editors.map((ed) => (
-              <button
-                key={ed.id}
-                onClick={() => setActiveEditor(ed.id)}
-                className={`px-4 py-2 border-r-2 border-gray-900 ${
-                  ed.id === activeEditorId ? "bg-[#f6f8fa]" : "bg-gray-200"
-                }`}
-              >
-                {ed.filename}
-              </button>
-            ))}
-            <button className="px-2" onClick={addEditor} title="New File">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </button>
-          </div>
           <CodeEditorWindow
             code={code}
-            filename={filename}
             onChange={onChange}
-            onNewTab={addEditor}
+            onLanguageChange={setLanguageByExtension}
             language={language?.value}
             extension={language?.extension}
             theme={theme.value}
