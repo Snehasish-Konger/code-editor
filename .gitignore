@@ -5,8 +5,7 @@
 /.pnp
 .pnp.js
 .firebase/
-.firebaserc
-firebase.json
+# Exclude Firebase emulator and database rules but keep configuration files
 firestore.indexes.json
 firestore.rules
 database.rules.json
