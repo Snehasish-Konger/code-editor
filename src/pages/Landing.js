@@ -70,8 +70,15 @@ const Landing = () => {
   // Function starts here ---------------------------------------------------------------------------------------------------
 
   const onSelectChange = (sl) => {
-    // console.log("selected Option...", sl);
-    setLanguage(sl);
+    updateLanguage(sl);
+  };
+
+  // Keep the active tab in sync so switching tabs restores its language.
+  const updateLanguage = (newLang) => {
+    setLanguage(newLang);
+    setTabs((prev) =>
+      prev.map((t) => (t.id === activeTab ? { ...t, language: newLang } : t))
+    );
   };
 
   const addEditor = () => {
@@ -178,7 +185,7 @@ const Landing = () => {
   const setLanguageByExtension = (ext) => {
     const found = lang.find((l) => l.extension === ext);
     if (found) {
-      setLanguage(found);
+      updateLanguage(found);
     }
   };
 
@@ -373,7 +380,10 @@ const Landing = () => {
       <div className="md:flex flex-row">
         <div className="px-4 py-2">
           <span className="text-lg font-semibold">Code Editor</span>
-          <LanguagesDropdown onSelectChange={onSelectChange} />
+          <LanguagesDropdown
+            value={language}
+            onSelectChange={onSelectChange}
+          />
         </div>
         <div className="px-4 py-2">
           <span className="text-lg font-semibold">Theme</span>
