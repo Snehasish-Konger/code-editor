@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import CodeEditorWindow from "../components/CodeEditorWindow";
 import axios from "axios";
 import { classnames } from "../utils/general";
+import { encodeBase64 } from "../utils/base64";
 import { lang } from "../constants/lang";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -78,7 +79,7 @@ const Landing = () => {
     const newId = idRef.current;
     const newFile = `File${newId}.${language.extension}`;
     const newTab = { id: newId, code: "", filename: newFile, language };
-    setTabs([...tabs, newTab]);
+    setTabs((prev) => [...prev, newTab]);
     setActiveTab(newId);
     setCode("");
     setFilename(newFile);
@@ -152,13 +153,13 @@ const Landing = () => {
       reader.onload = (ev) => {
         const text = ev.target.result;
         setCode(text);
-        setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, code: text } : t)));
+        setTabs((prev) => prev.map((t) => (t.id === activeTab ? { ...t, code: text } : t)));
       };
       reader.readAsText(file);
       if (file) {
         const full = file.name;
         setFilename(full);
-        setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, filename: full } : t)));
+        setTabs((prev) => prev.map((t) => (t.id === activeTab ? { ...t, filename: full } : t)));
         const idx = full.lastIndexOf(".");
         if (idx !== -1) {
           const ext = full.substring(idx + 1);
@@ -193,10 +194,10 @@ const Landing = () => {
   const onChange = (action, data) => {
     if (action === "code") {
       setCode(data);
-      setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, code: data } : t)));
+      setTabs((prev) => prev.map((t) => (t.id === activeTab ? { ...t, code: data } : t)));
     } else if (action === "filename") {
       setFilename(data);
-      setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, filename: data } : t)));
+      setTabs((prev) => prev.map((t) => (t.id === activeTab ? { ...t, filename: data } : t)));
     } else {
       console.warn("case not handled!", action, data);
     }
@@ -204,11 +205,11 @@ const Landing = () => {
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
-      source_file: btoa(filename),
+      source_file: encodeBase64(filename),
       language_id: language.id,
       // encode source code in base64
-      source_code: btoa(code),
-      stdin: btoa(customInput),
+      source_code: encodeBase64(code),
+      stdin: encodeBase64(customInput),
     };
     const options = {
       method: "POST",
@@ -233,7 +234,7 @@ const Landing = () => {
       .catch((err) => {
         let error = err.response ? err.response.data : err;
         // get error status
-        let status = err.response.status;
+        let status = err.response?.status;
         console.log("status", status);
         if (status === 429) {
           console.log("too many requests", status);
@@ -242,6 +243,8 @@ const Landing = () => {
             `Quota of 100 requests exceeded for the Day! Try again tomorrow.`,
             10000
           );
+        } else {
+          showErrorToast();
         }
         setProcessing(false);
         console.log("catch block...", error);
