@@ -14,6 +14,7 @@ It is not an open source project and we don't recommend to use it for commercial
   - [About](#about)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
+  - [Getting Started](#getting-started)
   - [Tech Stack](#tech-stack)
   - [Project Structure](#project-structure)
   - [Features](#features)
@@ -27,6 +28,18 @@ It is not an open source project and we don't recommend to use it for commercial
 This is an online code editor that allows users to write and execute code in a variety of programming languages. It features a Monaco Editor, which is the same code editor that powers Visual Studio Code. The Monaco Editor provides syntax highlighting and autocomplete for over 40 programming languages, making it a powerful tool for developers.
 
 The code editor also has customizable themes, allowing users to personalize their coding experience. Additionally, the compiled code's execution information (such as time taken and memory used) is displayed to the user, providing insight into the performance of their code.
+
+## Getting Started
+
+Requires Node.js 18+ and a free [Judge0 CE](https://rapidapi.com/judge0-official/api/judge0-ce) key from RapidAPI.
+
+```bash
+npm install
+cp .env.example .env   # then fill in your RapidAPI values
+npm start              # http://localhost:3000
+```
+
+Run the tests with `npm test`. CI runs the tests and a production build on every pull request.
 
 ## Tech Stack
 

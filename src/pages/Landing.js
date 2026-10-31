@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import CodeEditorWindow from "../components/CodeEditorWindow";
 import axios from "axios";
 import { classnames } from "../utils/general";
+import { encodeBase64 } from "../utils/base64";
 import { lang } from "../constants/lang";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -19,6 +20,10 @@ import Toolbox from "../components/Toolbox";
 import { AuthContext } from "../context/AuthProvider";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFirestore, addDoc, collection } from "firebase/firestore";
+
+const POLL_INTERVAL_MS = 2000;
+// Give up after ~1 minute so a stuck submission can't poll forever.
+const MAX_POLL_ATTEMPTS = 30;
 
 const Default = `/**************************************************
 You can write code in any of the languages supported by the compiler.
@@ -63,14 +68,23 @@ const Landing = () => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("github");
   const idRef = useRef(1);
+  const pollTimerRef = useRef(null);
+  const unmountedRef = useRef(false);
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
   // Function starts here ---------------------------------------------------------------------------------------------------
 
   const onSelectChange = (sl) => {
-    // console.log("selected Option...", sl);
-    setLanguage(sl);
+    updateLanguage(sl);
+  };
+
+  // Keep the active tab in sync so switching tabs restores its language.
+  const updateLanguage = (newLang) => {
+    setLanguage(newLang);
+    setTabs((prev) =>
+      prev.map((t) => (t.id === activeTab ? { ...t, language: newLang } : t))
+    );
   };
 
   const addEditor = () => {
@@ -78,7 +92,7 @@ const Landing = () => {
     const newId = idRef.current;
     const newFile = `File${newId}.${language.extension}`;
     const newTab = { id: newId, code: "", filename: newFile, language };
-    setTabs([...tabs, newTab]);
+    setTabs((prev) => [...prev, newTab]);
     setActiveTab(newId);
     setCode("");
     setFilename(newFile);
@@ -152,13 +166,13 @@ const Landing = () => {
       reader.onload = (ev) => {
         const text = ev.target.result;
         setCode(text);
-        setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, code: text } : t)));
+        setTabs((prev) => prev.map((t) => (t.id === activeTab ? { ...t, code: text } : t)));
       };
       reader.readAsText(file);
       if (file) {
         const full = file.name;
         setFilename(full);
-        setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, filename: full } : t)));
+        setTabs((prev) => prev.map((t) => (t.id === activeTab ? { ...t, filename: full } : t)));
         const idx = full.lastIndexOf(".");
         if (idx !== -1) {
           const ext = full.substring(idx + 1);
@@ -177,7 +191,7 @@ const Landing = () => {
   const setLanguageByExtension = (ext) => {
     const found = lang.find((l) => l.extension === ext);
     if (found) {
-      setLanguage(found);
+      updateLanguage(found);
     }
   };
 
@@ -193,22 +207,30 @@ const Landing = () => {
   const onChange = (action, data) => {
     if (action === "code") {
       setCode(data);
-      setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, code: data } : t)));
+      setTabs((prev) => prev.map((t) => (t.id === activeTab ? { ...t, code: data } : t)));
     } else if (action === "filename") {
       setFilename(data);
-      setTabs(tabs.map((t) => (t.id === activeTab ? { ...t, filename: data } : t)));
+      setTabs((prev) => prev.map((t) => (t.id === activeTab ? { ...t, filename: data } : t)));
     } else {
       console.warn("case not handled!", action, data);
     }
   };
+  useEffect(() => {
+    return () => {
+      unmountedRef.current = true;
+      clearTimeout(pollTimerRef.current);
+    };
+  }, []);
+
   const handleCompile = () => {
+    if (processing) return;
     setProcessing(true);
     const formData = {
-      source_file: btoa(filename),
+      source_file: encodeBase64(filename),
       language_id: language.id,
       // encode source code in base64
-      source_code: btoa(code),
-      stdin: btoa(customInput),
+      source_code: encodeBase64(code),
+      stdin: encodeBase64(customInput),
     };
     const options = {
       method: "POST",
@@ -233,7 +255,7 @@ const Landing = () => {
       .catch((err) => {
         let error = err.response ? err.response.data : err;
         // get error status
-        let status = err.response.status;
+        let status = err.response?.status;
         console.log("status", status);
         if (status === 429) {
           console.log("too many requests", status);
@@ -242,13 +264,15 @@ const Landing = () => {
             `Quota of 100 requests exceeded for the Day! Try again tomorrow.`,
             10000
           );
+        } else {
+          showErrorToast();
         }
         setProcessing(false);
         console.log("catch block...", error);
       });
   };
 
-  const checkStatus = async (token) => {
+  const checkStatus = async (token, attempt = 1) => {
     const options = {
       method: "GET",
       url: process.env.REACT_APP_RAPID_API_URL + "/" + token,
@@ -265,9 +289,15 @@ const Landing = () => {
       // Processed - we have a result
       if (statusId === 1 || statusId === 2) {
         // still processing
-        setTimeout(() => {
-          checkStatus(token);
-        }, 2000);
+        if (unmountedRef.current) return;
+        if (attempt >= MAX_POLL_ATTEMPTS) {
+          setProcessing(false);
+          showErrorToast("Execution timed out. Please try again.", 5000);
+          return;
+        }
+        pollTimerRef.current = setTimeout(() => {
+          checkStatus(token, attempt + 1);
+        }, POLL_INTERVAL_MS);
         return;
       } else {
         setProcessing(false);
@@ -370,7 +400,10 @@ const Landing = () => {
       <div className="md:flex flex-row">
         <div className="px-4 py-2">
           <span className="text-lg font-semibold">Code Editor</span>
-          <LanguagesDropdown onSelectChange={onSelectChange} />
+          <LanguagesDropdown
+            value={language}
+            onSelectChange={onSelectChange}
+          />
         </div>
         <div className="px-4 py-2">
           <span className="text-lg font-semibold">Theme</span>

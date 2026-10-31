@@ -1,4 +1,5 @@
 import React from "react";
+import { decodeBase64 } from "../utils/base64";
 
 const OutputWindow = ({ outputDetails }) => {
   const getOutput = () => {
@@ -8,15 +9,13 @@ const OutputWindow = ({ outputDetails }) => {
       // compilation error
       return (
         <pre className="px-2 py-1 font-normal text-xs text-red-500">
-          {atob(outputDetails?.compile_output)}
+          {decodeBase64(outputDetails?.compile_output)}
         </pre>
       );
     } else if (statusId === 3) {
       return (
         <pre className="px-2 py-1 font-normal text-xs text-green-500">
-          {atob(outputDetails.stdout) !== null
-            ? `${atob(outputDetails.stdout)}`
-            : null}
+          {decodeBase64(outputDetails.stdout)}
         </pre>
       );
     } else if (statusId === 5) {
@@ -28,7 +27,7 @@ const OutputWindow = ({ outputDetails }) => {
     } else {
       return (
         <pre className="px-2 py-1 font-normal text-xs text-red-500">
-          {atob(outputDetails?.stderr)}
+          {decodeBase64(outputDetails?.stderr)}
         </pre>
       );
     }
