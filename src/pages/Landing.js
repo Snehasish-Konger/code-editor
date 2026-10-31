@@ -21,6 +21,10 @@ import { AuthContext } from "../context/AuthProvider";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFirestore, addDoc, collection } from "firebase/firestore";
 
+const POLL_INTERVAL_MS = 2000;
+// Give up after ~1 minute so a stuck submission can't poll forever.
+const MAX_POLL_ATTEMPTS = 30;
+
 const Default = `/**************************************************
 You can write code in any of the languages supported by the compiler.
 You can also write your own custom input and see the output. ( Give the input prior to running the code smoothly.)
@@ -64,6 +68,8 @@ const Landing = () => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("github");
   const idRef = useRef(1);
+  const pollTimerRef = useRef(null);
+  const unmountedRef = useRef(false);
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
 
@@ -209,7 +215,15 @@ const Landing = () => {
       console.warn("case not handled!", action, data);
     }
   };
+  useEffect(() => {
+    return () => {
+      unmountedRef.current = true;
+      clearTimeout(pollTimerRef.current);
+    };
+  }, []);
+
   const handleCompile = () => {
+    if (processing) return;
     setProcessing(true);
     const formData = {
       source_file: encodeBase64(filename),
@@ -258,7 +272,7 @@ const Landing = () => {
       });
   };
 
-  const checkStatus = async (token) => {
+  const checkStatus = async (token, attempt = 1) => {
     const options = {
       method: "GET",
       url: process.env.REACT_APP_RAPID_API_URL + "/" + token,
@@ -275,9 +289,15 @@ const Landing = () => {
       // Processed - we have a result
       if (statusId === 1 || statusId === 2) {
         // still processing
-        setTimeout(() => {
-          checkStatus(token);
-        }, 2000);
+        if (unmountedRef.current) return;
+        if (attempt >= MAX_POLL_ATTEMPTS) {
+          setProcessing(false);
+          showErrorToast("Execution timed out. Please try again.", 5000);
+          return;
+        }
+        pollTimerRef.current = setTimeout(() => {
+          checkStatus(token, attempt + 1);
+        }, POLL_INTERVAL_MS);
         return;
       } else {
         setProcessing(false);
